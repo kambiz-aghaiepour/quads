@@ -1,7 +1,8 @@
 %define name quads
 %define version 0.99
 ##%define OWNER redhat-performance
-%define build_timestamp %(date +%%Y%%m%%d.%%H%%M)
+#%define build_timestamp %(date +%%Y%%m%%d.%%H%%M)
+%define build_timestamp 1.2
 #%global commit0 d7bf8ba8aef23d81dd15ed035e816e05854484e4
 #%global gittag0 GIT-TAG
 #%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})

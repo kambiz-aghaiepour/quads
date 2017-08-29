@@ -10,7 +10,7 @@ Summary: Automated future scheduling, documentation, end-to-end provisioning and
 Name: %{name}
 Version: %{version}
 Release: 1
-Source0: https://github.com/kambiz-aghaiepour/quads/archive/master.tar.gz
+Source0: https://github.com/kambiz-aghaiepour/quads/archive/master.tar.gz#/%{name}-%{version}-%{release}.tar.gz
 License: GPLv2+
 BuildRoot: %{_tmppath}/%{name}-buildroot
 Prefix: /usr

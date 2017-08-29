@@ -2,15 +2,15 @@
 %define version 0.99
 %define OWNER redhat-performance
 
-%global commit0 d7bf8ba8aef23d81dd15ed035e816e05854484e4
-%global gittag0 GIT-TAG
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+#%global commit0 d7bf8ba8aef23d81dd15ed035e816e05854484e4
+#%global gittag0 GIT-TAG
+#%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Summary: Automated future scheduling, documentation, end-to-end provisioning and assignment of servers and networks.
 Name: %{name}
 Version: %{version}
-Release: %{shortcommit0}
-Source0: https://github.com/%{OWNER}/%{name}/archive/%{commit0}.tar.gz#/%{name}-%{version}-%{shortcommit0}.tar.gz
+Release: 1
+Source0: https://github.com/kambiz-aghaiepour/quads/archive/master.tar.gz
 License: GPLv2+
 BuildRoot: %{_tmppath}/%{name}-buildroot
 Prefix: /usr
@@ -41,7 +41,7 @@ RT (or similiar ticketing system) integration.
 IRC bot and email notifications for new provisioning tasks and ones ending completion
 
 %prep
-%autosetup -n %{name}-%{commit0}
+%autosetup -n %{name}-master
 
 %install
 rm -rf %{buildroot}

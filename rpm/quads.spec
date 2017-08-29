@@ -11,7 +11,7 @@ Name: %{name}
 Version: %{version}
 Release: %{shortcommit0}
 Source0: https://github.com/%{OWNER}/%{name}/archive/%{commit0}.tar.gz#/%{name}-%{version}-%{shortcommit0}.tar.gz
-License: GPL3
+License: GPLv2+
 BuildRoot: %{_tmppath}/%{name}-buildroot
 Prefix: /usr
 BuildArchitectures: noarch

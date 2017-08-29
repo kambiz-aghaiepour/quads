@@ -1,7 +1,7 @@
 %define name quads
 %define version 0.99
-%define OWNER redhat-performance
-%define build_timestamp %(date +"%Y%m%d.%H%M")
+#%define OWNER redhat-performance
+#%define build_timestamp %(date +"%Y%m%d.%H%M")
 #%global commit0 d7bf8ba8aef23d81dd15ed035e816e05854484e4
 #%global gittag0 GIT-TAG
 #%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
@@ -9,7 +9,7 @@
 Summary: Automated future scheduling, documentation, end-to-end provisioning and assignment of servers and networks.
 Name: %{name}
 Version: %{version}
-Release: %{build_timestamp}
+Release: 1.1
 Source0: https://github.com/kambiz-aghaiepour/quads/archive/master.tar.gz#/%{name}-%{version}-%{release}.tar.gz
 License: GPLv2+
 BuildRoot: %{_tmppath}/%{name}-buildroot

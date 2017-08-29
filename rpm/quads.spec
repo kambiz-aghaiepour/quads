@@ -14,7 +14,7 @@ Source0: https://github.com/%{OWNER}/%{name}/archive/%{commit0}.tar.gz#/%{name}-
 License: GPLv2+
 BuildRoot: %{_tmppath}/%{name}-buildroot
 Prefix: /usr
-BuildArchitectures: noarch
+BuildArch: noarch
 Vendor: QUADS
 Packager: QUADS CI
 Requires: PyYAML >= 3.10

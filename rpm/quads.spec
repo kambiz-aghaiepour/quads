@@ -2,7 +2,7 @@
 %define version 0.99
 %define OWNER redhat-performance
 
-%global commit0 aa494183c65141197a48961e921a7e52bbccbeb3
+%global commit0 d7bf8ba8aef23d81dd15ed035e816e05854484e4
 %global gittag0 GIT-TAG
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 

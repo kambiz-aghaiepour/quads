@@ -4,7 +4,7 @@
 Summary: Automated future scheduling, documentation, end-to-end provisioning and assignment of servers and networks.
 Name: %{name}
 Version: %{version}
-Release: 1.4
+Release: 1.4.1
 Source0: https://github.com/kambiz-aghaiepour/quads/archive/master.tar.gz#/%{name}-%{version}-%{release}.tar.gz
 License: GPLv2+
 BuildRoot: %{_tmppath}/%{name}-buildroot
@@ -51,6 +51,6 @@ rm -rf %{buildroot}
 /opt/quads/bin/*
 /opt/quads/lib/*
 /opt/quads/systemd/*
-%config /opt/quads/conf/quads.yml
+%config(noreplace) /opt/quads/conf/quads.yml
 
 %changelog

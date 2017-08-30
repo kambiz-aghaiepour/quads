@@ -9,7 +9,7 @@
 
 %define name quads
 %define version 0.99
-%define build_timestamp 2
+%define build_timestamp %{lua: print(os.date("%Y%m%d%H%M"))}
 
 Summary: Automated future scheduling, documentation, end-to-end provisioning and assignment of servers and networks.
 Name: %{name}

@@ -1,17 +1,27 @@
+#### NOTE: if building locally you may need to do the following:
+####
+#### yum install rpmdevtools -y
+#### spectool -g -R rpm/quads.spec
+####
+#### At this point you can use rpmbuild -ba quads.spec
+#### (this is because our Source0 is a remote Github location
+####
+
 %define name quads
 %define version 0.99
+%define build_timestamp 2
 
 Summary: Automated future scheduling, documentation, end-to-end provisioning and assignment of servers and networks.
 Name: %{name}
 Version: %{version}
-Release: 1.4.1
-Source0: https://github.com/kambiz-aghaiepour/quads/archive/master.tar.gz#/%{name}-%{version}-%{release}.tar.gz
+Release: %{build_timestamp}
+Source0: https://github.com/redhat-performance/quads/archive/master.tar.gz#/%{name}-%{version}-%{release}.tar.gz
 License: GPLv2+
 BuildRoot: %{_tmppath}/%{name}-buildroot
-Prefix: /usr
+Prefix: /opt/quads
 BuildArch: noarch
 Vendor: QUADS
-Packager: QUADS CI
+Packager: QUADS
 Requires: PyYAML >= 3.10
 Requires: ansible >= 2.3
 Requires: expectk >= 5.0
@@ -40,17 +50,41 @@ IRC bot and email notifications for new provisioning tasks and ones ending compl
 
 %install
 rm -rf %{buildroot}
-mkdir %{buildroot}/opt/quads -p
-tar cf - bin lib/*.py conf ansible systemd | ( cd %{buildroot}/opt/quads/ ; tar xvpBf - )
+mkdir %{buildroot}%{prefix} -p
+mkdir %{buildroot}/etc/systemd/system/ -p
+mkdir %{buildroot}/etc/profile.d/ -p
+tar cf - bin lib/*.py conf ansible | ( cd %{buildroot}%{prefix} ; tar xvpBf - )
+cp -rf systemd/quads-daemon.service %{buildroot}/etc/systemd/system/
+echo 'export PATH="/opt/quads/bin:$PATH"' > %{buildroot}/etc/profile.d/quads.sh
 
 %clean
 rm -rf %{buildroot}
 
 %files
+/etc/systemd/system/quads-daemon.service
+/etc/profile.d/quads.sh
 /opt/quads/ansible/*
 /opt/quads/bin/*
 /opt/quads/lib/*
-/opt/quads/systemd/*
-%config(noreplace) /opt/quads/conf/quads.yml
+%config /opt/quads/conf/quads.yml
+
+%post
+systemctl enable quads-daemon
+mkdir /opt/quads/log
+touch /opt/quads/log/quads.log
+mkdir /var/log/quads
+:;
+
+%preun
+if [ "$1" -eq 0 ]; then
+  systemctl stop quads-daemon
+  systemctl disable quads-daemon
+fi;
+:;
 
 %changelog
+
+* Wed Aug 30 2017 - 0.99: Will Foster <wfoster@redhat.com>
+- Initial spec file and package into RPM
+- This will be available in Fedora COPR, updated in sync with master
+  - https://copr.fedorainfracloud.org/coprs/quadsdev/QUADS/

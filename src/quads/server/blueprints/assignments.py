@@ -223,7 +223,7 @@ def update_assignment(assignment_id: str) -> Response:
     update_fields = {}
     for attr in obj_attrs:
         value = data.get(attr.key)
-        if value is not None:
+        if value is not None or attr.key == "vlan":
             if attr.key == "ccuser":
                 value = re.split(r"[, ]+", value)
                 value = [user.strip() for user in value]
@@ -238,6 +238,9 @@ def update_assignment(assignment_id: str) -> Response:
                     return make_response(jsonify(response), 400)
                 value = _cloud
             if attr.key == "vlan":
+                if value is None:
+                    update_fields[attr.key] = value
+                    continue
                 _vlan = VlanDao.get_vlan(value)
                 if not _vlan:
                     response = {

@@ -976,8 +976,7 @@ class QuadsCli:
             try:
                 clean_data["vlan"] = int(self.cli_args.get("vlan"))
             except (TypeError, ValueError) as ཀʖ̯ཀ:  # pragma: no cover
-                self.logger.debug(ཀʖ̯ཀ, exc_info=ཀʖ̯ཀ)
-                raise CliException("Could not parse vlan id. Only integers accepted.")
+                clean_data["vlan"] = None
 
         if "wipe" in self.cli_args:
             clean_data["wipe"] = self.cli_args.get("wipe")

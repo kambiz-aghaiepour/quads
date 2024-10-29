@@ -236,10 +236,13 @@ class TestCloud(TestBase):
         self.cli_args["cloudticket"] = None
         self.cli_args["vlan"] = "BADVLAN"
 
-        with pytest.raises(CliException) as ex:
-            self.quads_cli_call("modcloud")
+        self.quads_cli_call("modcloud")
 
-        assert str(ex.value) == "Could not parse vlan id. Only integers accepted."
+        assert self._caplog.messages[0] == "Cloud modified successfully"
+        cloud = CloudDao.get_cloud(MOD_CLOUD)
+        assignment = AssignmentDao.get_active_cloud_assignment(cloud)
+        assert assignment
+        assert assignment.vlan == None
 
     @patch("quads.quads_api.requests.Session.get")
     def test_ls_no_clouds(self, mock_get):

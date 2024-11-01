@@ -147,17 +147,9 @@ class CloudOperations:
         """
         all_hosts = self.__get_all_hosts()
         blacklist = re.compile("|".join([re.escape(word) for word in exclude_hosts.split("|")]))
-        mgmt_hosts = {}
-        for host, properties in all_hosts.items():
-            if not blacklist.search(host):
-                if properties.get("sp_name", False):
-                    properties["host_ip"] = all_hosts.get(host, {"ip": None})["ip"]
-                    properties["host_mac"] = all_hosts.get(host, {"mac": None})["mac"]
-                    properties["ip"] = properties.get("sp_ip")
-                    properties["mac"] = properties.get("sp_mac")
-                    mgmt_hosts[properties.get("sp_name")] = properties
+        mgmt_hosts = [property.get("sp_name") for host, property in all_hosts.items() if property.get("sp_name", False) and not blacklist.search(host)]
         unmanaged_hosts = []
-        for host, properties in mgmt_hosts.items():
+        for host in mgmt_hosts:
             real_host = host[5:]
             try:
                 host_obj = self.__quads_api.get_host(real_host)

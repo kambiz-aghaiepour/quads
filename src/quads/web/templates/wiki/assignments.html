@@ -5,8 +5,9 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-9 col-sm-12 col-10">
-                <h3><strong>SUMMARY</strong></h3>
-
+                <h3>
+                    <strong>SUMMARY</strong>
+                </h3>
                 <table class="table" id="summary">
                 </table>
 
@@ -69,7 +70,9 @@
                 ),
                 $('<table>')
                     .addClass('table')
+                    .addClass('cloud-table')
                     .attr('id', `hosts-${cloud.name}`)
+                    .attr('data-cloud-id', `${cloud.name}`)
                     .append([
                         $('<thead>').append(
                             $('<tr>').append(
@@ -169,6 +172,13 @@
                 
             if ($table.find('thead').length === 0) {
                 $table.append($('<thead>'));
+                $table.find('thead').append(
+                    $('<tr>').append(
+                        headers.map(header =>
+                            $('<th>').attr('scope', 'col').text(header)
+                        )
+                    )
+                );
             }
             if ($table.find('tbody').length === 0) {
                 $table.append($('<tbody>'));
@@ -240,7 +250,11 @@
                                 // OSPENV
                                 $('<td>').append(
                                     cloud.href_url_text_openstack ? 
-                                        $('<a>')
+                                        cloud.href_url_text_openstack.toLowerCase().includes('validating') ?
+                                            $('<span>')
+                                                .addClass(`${cloud.href_color} text-decoration-none`)
+                                                .text(cloud.href_url_text_openstack)
+                                        : $('<a>')
                                             .addClass(`${cloud.href_color} text-decoration-none`)
                                             .attr('href', cloud.href_url_openstack)
                                             .attr('target', cloud.is_valid ? '_blank' : '')
@@ -250,7 +264,11 @@
                                 // OCPINV
                                 $('<td>').append(
                                     cloud.href_url_text_openshift ? 
-                                        $('<a>')
+                                        cloud.href_url_text_openshift.toLowerCase().includes('validating') ?
+                                            $('<span>')
+                                                .addClass(`${cloud.href_color} text-decoration-none`)
+                                                .text(cloud.href_url_text_openshift)
+                                        : $('<a>')
                                             .addClass(`${cloud.href_color} text-decoration-none`)
                                             .attr('href', cloud.href_url_openshift)
                                             .attr('target', cloud.is_valid ? '_blank' : '')
@@ -265,7 +283,26 @@
                     const $cloudContainer = $('#cloud-sections').empty();
                     data.forEach(cloud => {
                         $cloudContainer.append(createCloudSection(cloud));
-                        updateHostsForCloud(cloud.name);
+                    });
+
+                    const observerOptions = {
+                        root: null, // Use the viewport as the root
+                        rootMargin: '0px',
+                        threshold: 0.1 // Trigger when 10% of the element is visible
+                    };
+
+                    const observer = new IntersectionObserver((entries, observer) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                const cloudName = entry.target.getAttribute('data-cloud-id');
+                                updateHostsForCloud(cloudName);
+                                observer.unobserve(entry.target);
+                            }
+                        });
+                    }, observerOptions);
+
+                    $('.cloud-table').each(function() {
+                        observer.observe(this);
                     });
                 },
                 error: function(xhr, status, error) {
@@ -405,7 +442,6 @@
                 }
             });
         }
-        
 
         // Call updateSummaryData when document is ready
         $(document).ready(function() {

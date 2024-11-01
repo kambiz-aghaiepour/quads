@@ -8,7 +8,7 @@
             <div class="col-md-9 col-sm-12 col-10">
                 {% for rack in racks.split() %}
                     <p><strong>Rack {{ rack }}</strong></p>
-                    <table class="table" id="rack-{{ rack }}">
+                    <table class="table" id="rack-{{ rack }}" data-rack-id={{ rack }}>
                     </table>
                 {% endfor %}
             </div>
@@ -117,10 +117,25 @@
             });
         };
 
-        // Initialize data loading for each rack
+        const observerOptions = {
+            root: null, // Use the viewport as the root
+            rootMargin: '0px',
+            threshold: 0.1 // Trigger when 10% of the element is visible
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const rackId = entry.target.getAttribute('data-rack-id');
+                    updateRackData(rackId);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Observe all rack elements
         $('.table').each(function() {
-            const rackId = $(this).attr('id').replace('rack-', '');
-            updateRackData(rackId);
+            observer.observe(this);
         });
     });
     </script>

@@ -656,10 +656,10 @@ class QuadsCli:
 
         if not check:
             data = {
-                "one_day": False,
-                "three_days": False,
-                "five_days": False,
-                "seven_days": False,
+                "one_day": "False",
+                "three_days": "False",
+                "five_days": "False",
+                "seven_days": "False",
             }
             try:
                 self.quads.update_notification(schedules[0].assignment.notification.id, data)

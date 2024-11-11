@@ -101,7 +101,7 @@ def verify(_cloud_name, _host_name, change=False):  # pragma: no cover
                         )
 
                     if change:
-                        if _assignment.vlan and last_nic:
+                        if _assignment and _assignment.vlan and last_nic:
                             if int(_assignment.vlan.vlan_id) != int(old_vlan):
 
                                 logger.info(f"Change requested for {interface.name}")

@@ -196,7 +196,7 @@ class Validator(object):  # pragma: no cover
                 }
                 previous_schedule = quads.get_schedules(data=data)
                 if previous_schedule:
-                    previous_cloud = previous_schedule[0].cloud.name
+                    previous_cloud = previous_schedule[0].assignment.cloud.name
                 result = switch_config(host.name, previous_cloud, host.cloud.name)
                 if result:
                     try:

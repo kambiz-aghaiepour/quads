@@ -185,9 +185,7 @@ def get_summary() -> Response:
             description = Config["spare_pool_description"]
             owner = Config["spare_pool_owner"]
         else:
-            date = (
-                datetime.strptime(_date, "%Y-%m-%dT%H:%M") if _date else datetime.now()
-            )
+            date = datetime.strptime(_date, "%Y-%m-%dT%H:%M") if _date else datetime.now()
             schedules = ScheduleDao.get_current_schedule(cloud=_cloud, date=date)
             count = len(schedules)
             total_count += count

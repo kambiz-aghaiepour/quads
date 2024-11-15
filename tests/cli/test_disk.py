@@ -14,14 +14,14 @@ class TestDisk(TestBase):
 
         self.quads_cli_call("disks")
 
-        assert self._caplog.messages[0] == f"disk0:"
-        assert self._caplog.messages[1] == f"  type: NVME"
-        assert self._caplog.messages[2] == f"  size: 4096"
-        assert self._caplog.messages[3] == f"  count: 10"
-        assert self._caplog.messages[4] == f"disk1:"
-        assert self._caplog.messages[5] == f"  type: SATA"
-        assert self._caplog.messages[6] == f"  size: 4096"
-        assert self._caplog.messages[7] == f"  count: 5"
+        assert self._caplog.messages[0] == "disk0:"
+        assert self._caplog.messages[1] == "  type: NVME"
+        assert self._caplog.messages[2] == "  size: 4096"
+        assert self._caplog.messages[3] == "  count: 10"
+        assert self._caplog.messages[4] == "disk1:"
+        assert self._caplog.messages[5] == "  type: SATA"
+        assert self._caplog.messages[6] == "  size: 4096"
+        assert self._caplog.messages[7] == "  count: 5"
 
     def test_ls_disk_missing_host(self):
         if self.cli_args.get("host"):

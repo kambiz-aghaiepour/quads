@@ -25,12 +25,12 @@ class TestJira(object):
         assert jira.headers == {"Authorization": "Bearer: token"}
 
     def test_class_object_parameters_raise_error(self):
-        with pytest.raises(JiraException) as err:
+        with pytest.raises(JiraException):
             Config.jira_auth = "basic"
             Jira(url=self.url, loop=self.loop, semaphore=self.semaphore)
 
     def test_class_object_token_error(self):
-        with pytest.raises(JiraException) as err:
+        with pytest.raises(JiraException):
             Config.jira_auth = "token"
             Config.jira_token = ""
             Jira(url=self.url, loop=self.loop, semaphore=self.semaphore)
@@ -118,9 +118,7 @@ class TestJira(object):
             password=self.password,
             semaphore=self.semaphore,
         )
-        response = await jira.post_request(
-            endpoint="/test", payload={"test": "mock_result"}
-        )
+        response = await jira.post_request(endpoint="/test", payload={"test": "mock_result"})
         assert response
 
     @patch("quads.tools.external.jira.aiohttp.ClientSession.post")
@@ -133,9 +131,7 @@ class TestJira(object):
             password=self.password,
             semaphore=self.semaphore,
         )
-        response = await jira.post_request(
-            endpoint="/test", payload={"test": "mock_result"}
-        )
+        response = await jira.post_request(endpoint="/test", payload={"test": "mock_result"})
         assert not response
 
     @patch("quads.tools.external.jira.aiohttp.ClientSession.post")
@@ -152,9 +148,7 @@ class TestJira(object):
             password=self.password,
             semaphore=self.semaphore,
         )
-        response = await jira.post_request(
-            endpoint="/test", payload={"test": "mock_result"}
-        )
+        response = await jira.post_request(endpoint="/test", payload={"test": "mock_result"})
         assert not response
 
     @patch("quads.tools.external.jira.aiohttp.ClientSession.post")
@@ -170,9 +164,7 @@ class TestJira(object):
             password=self.password,
             semaphore=self.semaphore,
         )
-        response = await jira.post_request(
-            endpoint="/test", payload={"test": "mock_result"}
-        )
+        response = await jira.post_request(endpoint="/test", payload={"test": "mock_result"})
         assert not response
 
     @patch("quads.tools.external.jira.aiohttp.ClientSession.put")
@@ -189,9 +181,7 @@ class TestJira(object):
             password=self.password,
             semaphore=self.semaphore,
         )
-        response = await jira.put_request(
-            endpoint="/test", payload={"test": "mock_result"}
-        )
+        response = await jira.put_request(endpoint="/test", payload={"test": "mock_result"})
         assert response
 
     @patch("quads.tools.external.jira.aiohttp.ClientSession.put")
@@ -204,9 +194,7 @@ class TestJira(object):
             password=self.password,
             semaphore=self.semaphore,
         )
-        response = await jira.put_request(
-            endpoint="/test", payload={"test": "mock_result"}
-        )
+        response = await jira.put_request(endpoint="/test", payload={"test": "mock_result"})
         assert not response
 
     @patch("quads.tools.external.jira.aiohttp.ClientSession.put")
@@ -223,9 +211,7 @@ class TestJira(object):
             password=self.password,
             semaphore=self.semaphore,
         )
-        response = await jira.put_request(
-            endpoint="/test", payload={"test": "mock_result"}
-        )
+        response = await jira.put_request(endpoint="/test", payload={"test": "mock_result"})
         assert not response
 
     @patch("quads.tools.external.jira.aiohttp.ClientSession.put")
@@ -241,9 +227,7 @@ class TestJira(object):
             password=self.password,
             semaphore=self.semaphore,
         )
-        response = await jira.put_request(
-            endpoint="/test", payload={"test": "mock_result"}
-        )
+        response = await jira.put_request(endpoint="/test", payload={"test": "mock_result"})
         assert not response
 
     @patch("quads.tools.external.jira.aiohttp.ClientSession.post")
@@ -420,9 +404,7 @@ class TestJira(object):
     @pytest.mark.asyncio
     async def test_get_transition_id(self, mock_get):
         resp = AsyncMock()
-        resp.json.return_value = [
-            {"statuses": [{"name": "Closed", "id": "2"}, {"name": "New", "id": "1"}]}
-        ]
+        resp.json.return_value = [{"statuses": [{"name": "Closed", "id": "2"}, {"name": "New", "id": "1"}]}]
         resp.status = 200
         mock_get.return_value.__aenter__.return_value = resp
 

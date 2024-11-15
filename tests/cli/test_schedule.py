@@ -32,12 +32,8 @@ def define_fixture(request):
     request.addfinalizer(finalizer)
 
     cloud = CloudDao.get_cloud(CLOUD)
-    vlan = VlanDao.create_vlan(
-        "192.168.1.1", 122, "192.168.1.1/22", "255.255.255.255", 1
-    )
-    AssignmentDao.create_assignment(
-        "test", "test", "1234", 0, False, [""], cloud.name, vlan.vlan_id
-    )
+    vlan = VlanDao.create_vlan("192.168.1.1", 122, "192.168.1.1/22", "255.255.255.255", 1)
+    AssignmentDao.create_assignment("test", "test", "1234", 0, False, [""], cloud.name, vlan.vlan_id)
 
 
 @pytest.fixture
@@ -49,12 +45,8 @@ def remove_fixture(request):
 
     cloud = CloudDao.get_cloud(CLOUD)
     host = HostDao.get_host(HOST2)
-    vlan = VlanDao.create_vlan(
-        "192.168.1.1", 122, "192.168.1.1/22", "255.255.255.255", 1
-    )
-    assignment = AssignmentDao.create_assignment(
-        "test", "test", "1234", 0, False, [""], cloud.name, vlan.vlan_id
-    )
+    vlan = VlanDao.create_vlan("192.168.1.1", 122, "192.168.1.1/22", "255.255.255.255", 1)
+    assignment = AssignmentDao.create_assignment("test", "test", "1234", 0, False, [""], cloud.name, vlan.vlan_id)
     schedule = ScheduleDao.create_schedule(
         today.strftime("%Y-%m-%d %H:%M"),
         tomorrow.strftime("%Y-%m-%d %H:%M"),
@@ -88,18 +80,13 @@ class TestSchedule(TestBase):
         self.cli_args["schedend"] = tomorrow.strftime("%Y-%m-%d %H:%M")
         self.cli_args["schedcloud"] = CLOUD
         self.cli_args["host"] = None
-        self.cli_args["host_list"] = os.path.join(
-            os.path.dirname(__file__), "fixtures/hostlist"
-        )
+        self.cli_args["host_list"] = os.path.join(os.path.dirname(__file__), "fixtures/hostlist")
         self.cli_args["omitcloud"] = None
 
         with pytest.raises(CliException) as ex:
             self.quads_cli_call("add_schedule")
         assert str(ex.value) == "Remove these from your host list and try again."
-        assert (
-            self._caplog.messages[0]
-            == "The following hosts are either broken or unavailable:"
-        )
+        assert self._caplog.messages[0] == "The following hosts are either broken or unavailable:"
         assert self._caplog.messages[1] == f"{HOST1}"
         assert self._caplog.messages[2] == f"{HOST2}"
 
@@ -110,9 +97,7 @@ class TestSchedule(TestBase):
         self.cli_args["schedend"] = tomorrow.strftime("%Y-%m-%d %H:%M")
         self.cli_args["schedcloud"] = CLOUD
         self.cli_args["host"] = None
-        self.cli_args["host_list"] = os.path.join(
-            os.path.dirname(__file__), "nonexistent.file"
-        )
+        self.cli_args["host_list"] = os.path.join(os.path.dirname(__file__), "nonexistent.file")
         self.cli_args["omitcloud"] = None
 
         with pytest.raises(CliException) as ex:
@@ -218,9 +203,7 @@ class TestSchedule(TestBase):
         schedule_obj = ScheduleDao.get_schedule(_schedule[0].id)
         db.session.refresh(schedule_obj)
 
-        assert schedule_obj.end.strftime("%Y-%m-%dT%H:%M") == atomorrow.strftime(
-            "%Y-%m-%dT%H:%M"
-        )
+        assert schedule_obj.end.strftime("%Y-%m-%dT%H:%M") == atomorrow.strftime("%Y-%m-%dT%H:%M")
 
     def test_mod_schedule_no_args(self, remove_fixture):
         self.cli_args["schedstart"] = None
@@ -288,7 +271,7 @@ class TestSchedule(TestBase):
         with pytest.raises(CliException) as ex:
             self.quads_cli_call("schedule")
 
-        assert str(ex.value) == f"Host not found: BADHOST"
+        assert str(ex.value) == "Host not found: BADHOST"
 
     def test_ls_schedule_no_host(self, remove_fixture):
         self.cli_args["host_list"] = None
@@ -316,9 +299,7 @@ class TestExtend(TestBase):
         schedule_obj = ScheduleDao.get_schedule(_schedule[0].id)
         db.session.refresh(schedule_obj)
 
-        assert schedule_obj.end.strftime("%Y-%m-%d %H:%M") == atomorrow.strftime(
-            "%Y-%m-%d %H:%M"
-        )
+        assert schedule_obj.end.strftime("%Y-%m-%d %H:%M") == atomorrow.strftime("%Y-%m-%d %H:%M")
 
     def test_extend_schedule_no_schedule(self, define_fixture):
         self.cli_args["weeks"] = 2
@@ -327,10 +308,7 @@ class TestExtend(TestBase):
 
         self.quads_cli_call("extend")
 
-        assert (
-            self._caplog.messages[0]
-            == "The selected cloud does not have any active schedules"
-        )
+        assert self._caplog.messages[0] == "The selected cloud does not have any active schedules"
 
     def test_extend_no_dates(self):
         self.cli_args["weeks"] = None
@@ -340,10 +318,7 @@ class TestExtend(TestBase):
 
         with pytest.raises(CliException) as ex:
             self.quads_cli_call("extend")
-        assert (
-            str(ex.value)
-            == "Missing option. Need --weeks or --date when using --extend"
-        )
+        assert str(ex.value) == "Missing option. Need --weeks or --date when using --extend"
 
     def test_extend_no_target(self):
         self.cli_args["weeks"] = 2
@@ -353,10 +328,7 @@ class TestExtend(TestBase):
 
         with pytest.raises(CliException) as ex:
             self.quads_cli_call("extend")
-        assert (
-            str(ex.value)
-            == "Missing option. At least one of either --host or --cloud is required."
-        )
+        assert str(ex.value) == "Missing option. At least one of either --host or --cloud is required."
 
     def test_extend_bad_weeks(self):
         self.cli_args["weeks"] = "BADWEEKS"
@@ -397,9 +369,7 @@ class TestShrink(TestBase):
         schedule_obj = ScheduleDao.get_schedule(_schedule[0].id)
         db.session.refresh(schedule_obj)
 
-        assert schedule_obj.end.strftime("%Y-%m-%d %H:%M") == atomorrow.strftime(
-            "%Y-%m-%d %H:%M"
-        )
+        assert schedule_obj.end.strftime("%Y-%m-%d %H:%M") == atomorrow.strftime("%Y-%m-%d %H:%M")
 
     @patch("quads.cli.cli.input")
     def test_shrink_schedule_check(self, mock_input, remove_fixture):
@@ -416,15 +386,11 @@ class TestShrink(TestBase):
         self.cli_args["check"] = True
 
         self.quads_cli_call("shrink")
-        assert self._caplog.messages[0].startswith(
-            f"Host {HOST2} can be shrunk for 1 week[s] to"
-        )
+        assert self._caplog.messages[0].startswith(f"Host {HOST2} can be shrunk for 1 week[s] to")
         schedule_obj = ScheduleDao.get_schedule(_schedule[0].id)
         db.session.refresh(schedule_obj)
 
-        assert schedule_obj.end.strftime("%Y-%m-%d %H:%M") != atomorrow.strftime(
-            "%Y-%m-%d %H:%M"
-        )
+        assert schedule_obj.end.strftime("%Y-%m-%d %H:%M") != atomorrow.strftime("%Y-%m-%d %H:%M")
 
     @patch("quads.cli.cli.input")
     def test_shrink_date(self, mock_input, remove_fixture):
@@ -445,9 +411,7 @@ class TestShrink(TestBase):
         schedule_obj = ScheduleDao.get_schedule(_schedule[0].id)
         db.session.refresh(schedule_obj)
 
-        assert schedule_obj.end.strftime("%Y-%m-%d %H:%M") == atomorrow.strftime(
-            "%Y-%m-%d %H:%M"
-        )
+        assert schedule_obj.end.strftime("%Y-%m-%d %H:%M") == atomorrow.strftime("%Y-%m-%d %H:%M")
 
     def test_shrink_date_check(self, remove_fixture):
         host = HostDao.get_host(HOST2)
@@ -467,9 +431,7 @@ class TestShrink(TestBase):
         schedule_obj = ScheduleDao.get_schedule(_schedule[0].id)
         db.session.refresh(schedule_obj)
 
-        assert schedule_obj.end.strftime("%Y-%m-%d %H:%M") != atomorrow.strftime(
-            "%Y-%m-%d %H:%M"
-        )
+        assert schedule_obj.end.strftime("%Y-%m-%d %H:%M") != atomorrow.strftime("%Y-%m-%d %H:%M")
 
     @patch("quads.cli.cli.input")
     def test_shrink_now(self, mock_input, remove_fixture):
@@ -495,9 +457,7 @@ class TestShrink(TestBase):
     def test_shrink_now_check(self, remove_fixture):
         host = HostDao.get_host(HOST2)
         cloud = CloudDao.get_cloud(CLOUD)
-        _schedule = ScheduleDao.get_current_schedule(host=host, cloud=cloud)
-
-        today = datetime.now()
+        ScheduleDao.get_current_schedule(host=host, cloud=cloud)
 
         self.cli_args["datearg"] = None
         self.cli_args["weeks"] = None
@@ -532,7 +492,7 @@ class TestShrink(TestBase):
     def test_shrink_past_end(self, remove_fixture):
         host = HostDao.get_host(HOST2)
         cloud = CloudDao.get_cloud(CLOUD)
-        _schedule = ScheduleDao.get_current_schedule(host=host, cloud=cloud)
+        ScheduleDao.get_current_schedule(host=host, cloud=cloud)
 
         today = datetime.now()
         atomorrow = today + timedelta(weeks=3)
@@ -546,7 +506,7 @@ class TestShrink(TestBase):
         self.quads_cli_call("shrink")
         assert (
             self._caplog.messages[0]
-            == f"The following hosts cannot be shrunk past it's start date, target date means an extension or target date is earlier than 1 hour from now:"
+            == "The following hosts cannot be shrunk past it's start date, target date means an extension or target date is earlier than 1 hour from now:"
         )
         assert self._caplog.messages[1] == HOST2
         assert len(self._caplog.messages) == 2
@@ -561,10 +521,7 @@ class TestShrink(TestBase):
 
         with pytest.raises(CliException) as ex:
             self.quads_cli_call("shrink")
-        assert (
-            str(ex.value)
-            == "Missing option. Need --weeks, --date or --now when using --shrink"
-        )
+        assert str(ex.value) == "Missing option. Need --weeks, --date or --now when using --shrink"
 
     def test_shrink_no_target(self):
         self.cli_args["weeks"] = 2
@@ -575,10 +532,7 @@ class TestShrink(TestBase):
 
         with pytest.raises(CliException) as ex:
             self.quads_cli_call("shrink")
-        assert (
-            str(ex.value)
-            == "Missing option. At least one of either --host or --cloud is required"
-        )
+        assert str(ex.value) == "Missing option. At least one of either --host or --cloud is required"
 
     def test_shrink_bad_weeks(self):
         self.cli_args["weeks"] = "BADWEEKS"
@@ -610,10 +564,7 @@ class TestShrink(TestBase):
         self.cli_args["check"] = False
 
         self.quads_cli_call("shrink")
-        assert (
-            self._caplog.messages[0]
-            == f"The selected host does not have any active schedules"
-        )
+        assert self._caplog.messages[0] == "The selected host does not have any active schedules"
         assert len(self._caplog.messages) == 1
 
 

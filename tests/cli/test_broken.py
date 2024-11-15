@@ -45,9 +45,7 @@ class TestBroken(TestBase):
 
         self.quads_cli_call("mark_broken")
 
-        assert (
-            self._caplog.messages[0] == f"Host {HOST1} has already been marked broken"
-        )
+        assert self._caplog.messages[0] == f"Host {HOST1} has already been marked broken"
 
         host = HostDao.get_host(HOST1)
         assert host.broken
@@ -116,9 +114,7 @@ class TestRepaired(TestBase):
 
         self.quads_cli_call("mark_repaired")
 
-        assert (
-            self._caplog.messages[0] == f"Host {HOST1} has already been marked repaired"
-        )
+        assert self._caplog.messages[0] == f"Host {HOST1} has already been marked repaired"
 
         host = HostDao.get_host(HOST1)
         assert not host.broken

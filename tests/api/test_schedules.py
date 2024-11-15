@@ -330,7 +330,9 @@ class TestReadSchedule:
                 assert response.status_code == 200
                 assert response.json == resp
                 continue
-            resp[0]["assignment"]["cloud"]["last_redefined"] = response.json[0]["assignment"]["cloud"]["last_redefined"]
+            resp[0]["assignment"]["cloud"]["last_redefined"] = response.json[0]["assignment"]["cloud"][
+                "last_redefined"
+            ]
             resp[0]["assignment"]["created_at"] = response.json[0]["assignment"]["created_at"]
             resp[0]["created_at"] = response.json[0]["created_at"]
             resp[0]["host"]["created_at"] = response.json[0]["host"]["created_at"]
@@ -353,7 +355,7 @@ class TestReadSchedule:
         auth_header = auth.get_auth_header()
         response = unwrap_json(
             test_client.get(
-                f"/api/v3/schedules?start=invalid",
+                "/api/v3/schedules?start=invalid",
                 headers=auth_header,
             )
         )
@@ -396,7 +398,7 @@ class TestReadSchedule:
         ]
         response = unwrap_json(
             test_client.get(
-                f"/api/v3/schedules/future?host=host3.example.com",
+                "/api/v3/schedules/future?host=host3.example.com",
                 headers=auth_header,
             )
         )
@@ -490,7 +492,7 @@ class TestUpdateSchedule:
         )
         assert response.status_code == 400
         assert response.json["error"] == "Bad Request"
-        assert response.json["message"] == f"Invalid date format for start or end, correct format: 'YYYY-MM-DDTHH:MM'"
+        assert response.json["message"] == "Invalid date format for start or end, correct format: 'YYYY-MM-DDTHH:MM'"
 
     @pytest.mark.parametrize("prefill", prefill_settings, indirect=True)
     def test_invalid_date_ranges(self, test_client, auth, prefill):

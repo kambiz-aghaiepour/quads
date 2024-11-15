@@ -72,10 +72,7 @@ class TestCreateVLANs:
         )
         assert response.status_code == 400
         assert response.json["error"] == "Bad Request"
-        assert (
-            response.json["message"]
-            == f"Vlan {VLAN_1_REQUEST['vlan_id']} already exists"
-        )
+        assert response.json["message"] == f"Vlan {VLAN_1_REQUEST['vlan_id']} already exists"
 
 
 class TestReadVLANs:
@@ -191,10 +188,9 @@ class TestDeleteVLANs:
         | THEN: User should not be able to delete a VLAN
         """
         auth_header = auth.get_auth_header()
-        invalid_vlan_id = 42
         response = unwrap_json(
             test_client.delete(
-                f"/api/v3/vlans/6253",
+                "/api/v3/vlans/6253",
                 headers=auth_header,
             )
         )

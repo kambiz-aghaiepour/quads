@@ -146,10 +146,7 @@ class TestCheckAccess:
         )
         assert response.status_code == 403
         assert response.json["error"] == "Forbidden"
-        assert (
-            response.json["message"]
-            == "You don't have the permission to access the requested resource"
-        )
+        assert response.json["message"] == "You don't have the permission to access the requested resource"
 
     @patch("quads.server.models.User", UserClassStub)
     def test_invalid_no_user_token(self, test_client):
@@ -177,10 +174,8 @@ class TestCheckAccess:
         | WHEN: User tries to access an endpoint while his status is set as inactive
         | THEN: User should not be able to access the endpoint
         """
-        db_session.query.return_value.filter.return_value.first.return_value = (
-            UserClassStub(
-                id=1, email="test@redhat.com", password="password", active=False
-            )
+        db_session.query.return_value.filter.return_value.first.return_value = UserClassStub(
+            id=1, email="test@redhat.com", password="password", active=False
         )
         response = unwrap_json(
             test_client.post(
@@ -191,10 +186,7 @@ class TestCheckAccess:
         )
         assert response.status_code == 403
         assert response.json["error"] == "Forbidden"
-        assert (
-            response.json["message"]
-            == "You don't have the permission to access the requested resource"
-        )
+        assert response.json["message"] == "You don't have the permission to access the requested resource"
 
 
 class TestRegistration:
@@ -271,9 +263,7 @@ class TestLogin:
         | WHEN: User tries to log in with invalid credentials.
         | THEN: User should not be able to log in due to failed basic auth
         """
-        invalid_credentials = base64.b64encode(
-            b"none@redhat.com:wrong_password"
-        ).decode("utf-8")
+        invalid_credentials = base64.b64encode(b"none@redhat.com:wrong_password").decode("utf-8")
         response = unwrap_json(
             test_client.post(
                 "/api/v3/login",
@@ -291,9 +281,7 @@ class TestLogin:
         | WHEN: User tries to log in with valid credentials.
         | THEN: User should not be able to log in due unexpected exception
         """
-        valid_credentials = base64.b64encode(b"grafuls@redhat.com:password").decode(
-            "utf-8"
-        )
+        valid_credentials = base64.b64encode(b"grafuls@redhat.com:password").decode("utf-8")
         response = unwrap_json(
             test_client.post(
                 "/api/v3/login",
@@ -311,9 +299,7 @@ class TestLogin:
         | WHEN: User tries to log in with valid email and password
         | THEN: User should be able to log in
         """
-        valid_credentials = base64.b64encode(b"grafuls@redhat.com:password").decode(
-            "utf-8"
-        )
+        valid_credentials = base64.b64encode(b"grafuls@redhat.com:password").decode("utf-8")
         response = unwrap_json(
             test_client.post(
                 "/api/v3/login",

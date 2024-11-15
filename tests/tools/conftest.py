@@ -63,7 +63,7 @@ def populate_db():
     mod_cloud = CloudDao.create_cloud(MOD_CLOUD)
     host1 = HostDao.create_host(HOST1, MODEL1, HOST_TYPE, CLOUD)
     host2 = HostDao.create_host(HOST2, MODEL2, HOST_TYPE, CLOUD)
-    host3 = HostDao.create_host(HOST_E20, MODEL1, HOST_TYPE, CLOUD)
+    HostDao.create_host(HOST_E20, MODEL1, HOST_TYPE, CLOUD)
     InterfaceDao.create_interface(
         HOST1,
         IFNAME1,
@@ -81,19 +81,11 @@ def populate_db():
     MemoryDao.create_memory(HOST1, "DIMM1", 2048)
     MemoryDao.create_memory(HOST1, "DIMM2", 2048)
     ProcessorDao.create_processor(HOST1, "P1", "Intel", "i7", 2, 4)
-    vlan1 = VlanDao.create_vlan(
-        "192.168.1.1", 122, "192.168.1.1/22", "255.255.255.255", 1
-    )
-    vlan2 = VlanDao.create_vlan(
-        "192.168.1.2", 122, "192.168.1.2/22", "255.255.255.255", 2
-    )
-    assignment = AssignmentDao.create_assignment(
-        "test", "test", "1234", 0, False, [""], cloud.name, vlan1.vlan_id
-    )
-    assignment_mod = AssignmentDao.create_assignment(
-        "test", "test", "1234", 0, False, [""], mod_cloud.name, vlan2.vlan_id
-    )
-    schedule = ScheduleDao.create_schedule(
+    vlan1 = VlanDao.create_vlan("192.168.1.1", 122, "192.168.1.1/22", "255.255.255.255", 1)
+    vlan2 = VlanDao.create_vlan("192.168.1.2", 122, "192.168.1.2/22", "255.255.255.255", 2)
+    assignment = AssignmentDao.create_assignment("test", "test", "1234", 0, False, [""], cloud.name, vlan1.vlan_id)
+    AssignmentDao.create_assignment("test", "test", "1234", 0, False, [""], mod_cloud.name, vlan2.vlan_id)
+    ScheduleDao.create_schedule(
         today.strftime("%Y-%m-%d %H:%M"),
         tomorrow.strftime("%Y-%m-%d %H:%M"),
         assignment,

@@ -28,12 +28,8 @@ class TestJiraWatchers(object):
         host_name = HOST1
         host = HostDao.get_host(host_name)
         cloud = CloudDao.get_cloud(cloud_name)
-        vlan = VlanDao.create_vlan(
-            "192.168.1.1", 122, "192.168.1.1/22", "255.255.255.255", 1
-        )
-        assignment = AssignmentDao.create_assignment(
-            "test", "test", "1234", 0, False, [""], cloud.name, vlan.vlan_id
-        )
+        vlan = VlanDao.create_vlan("192.168.1.1", 122, "192.168.1.1/22", "255.255.255.255", 1)
+        assignment = AssignmentDao.create_assignment("test", "test", "1234", 0, False, [""], cloud.name, vlan.vlan_id)
         ScheduleDao.create_schedule(
             today.strftime("%Y-%m-%d %H:%M"),
             tomorrow.strftime("%Y-%m-%d %H:%M"),
@@ -107,12 +103,8 @@ class TestJiraWatchers(object):
         host_name = HOST1
         host = HostDao.get_host(host_name)
         cloud = CloudDao.get_cloud(cloud_name)
-        vlan = VlanDao.create_vlan(
-            "192.168.1.1", 122, "192.168.1.1/22", "255.255.255.255", 1
-        )
-        assignment = AssignmentDao.create_assignment(
-            "test", "test", "1234", 0, False, [""], cloud.name, vlan.vlan_id
-        )
+        vlan = VlanDao.create_vlan("192.168.1.1", 122, "192.168.1.1/22", "255.255.255.255", 1)
+        assignment = AssignmentDao.create_assignment("test", "test", "1234", 0, False, [""], cloud.name, vlan.vlan_id)
         ScheduleDao.create_schedule(
             today.strftime("%Y-%m-%d %H:%M"),
             tomorrow.strftime("%Y-%m-%d %H:%M"),

@@ -175,7 +175,7 @@ class TestReadInterfaces:
         auth_header = auth.get_auth_header()
         response = unwrap_json(
             test_client.get(
-                f"/api/v3/interfaces",
+                "/api/v3/interfaces",
                 headers=auth_header,
             )
         )
@@ -244,9 +244,7 @@ class TestUpdateInterfaces:
         )
         assert response.status_code == 400
         assert response.json["error"] == "Bad Request"
-        assert (
-            response.json["message"] == f"Interface not found: {update_request['id']}"
-        )
+        assert response.json["message"] == f"Interface not found: {update_request['id']}"
 
     @pytest.mark.parametrize("prefill", prefill_settings, indirect=True)
     def test_valid(self, test_client, auth, prefill):

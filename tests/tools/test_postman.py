@@ -61,7 +61,7 @@ class TestPostman:
     @patch("quads.tools.external.postman.SMTP")
     def test_postman_instance_created_with_no_cc(self, mocked_smtp):
         postman = Postman("Test Subject", "test", None, "Test Content")
-        assert postman.cc == None
+        assert postman.cc is None
 
     @patch("quads.tools.external.postman.SMTP")
     def test_compose_and_send_email_successfully(self, mocked_smtp):

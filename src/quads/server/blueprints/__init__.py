@@ -20,11 +20,7 @@ def check_access(roles):
                 if auth_value[0].lower() == "bearer":
                     try:
                         username = User.decode_auth_token(auth_value[1])
-                        current_user = (
-                            db.session.query(User)
-                            .filter(User.email == username)
-                            .first()
-                        )
+                        current_user = db.session.query(User).filter(User.email == username).first()
                         if current_user is None:
                             response = {
                                 "message": "Invalid Authentication token!",
@@ -47,9 +43,7 @@ def check_access(roles):
                 if auth_value[0].lower() == "basic":
                     username = request.authorization["username"]
                     password = request.authorization["password"]
-                    current_user = (
-                        db.session.query(User).filter(User.email == username).first()
-                    )
+                    current_user = db.session.query(User).filter(User.email == username).first()
                     if current_user is None:
                         response = {
                             "message": "Invalid Credentials!",

@@ -46,9 +46,7 @@ class InterfaceDao(BaseDao):
 
     @staticmethod
     def get_interface(interface_id: int) -> Interface:
-        interface = (
-            db.session.query(Interface).filter(Interface.id == interface_id).first()
-        )
+        interface = db.session.query(Interface).filter(Interface.id == interface_id).first()
         return interface
 
     @classmethod

@@ -104,16 +104,6 @@ class TestHost(TestBase):
 
         assert str(ex.value) == "Missing parameter --default-cloud"
 
-    def test_define_host_missing_model(self, remove_host):
-        self.cli_args["host"] = DEFINE_HOST
-        self.cli_args["hostcloud"] = CLOUD
-        self.cli_args["hosttype"] = HOST_TYPE
-
-        try:
-            self.quads_cli_call("hostresource")
-        except CliException as ex:
-            assert str(ex) == "Missing argument: model"
-
     def test_remove_host(self, add_host):
         self.cli_args["host"] = DEFINE_HOST
 
@@ -158,38 +148,35 @@ class TestHost(TestBase):
         assert len(self._caplog.messages) == 1
 
     def test_ls_host_filter_bool(self, mark_host_broken):
-        self.cli_args["filter"] = f"broken==true"
+        self.cli_args["filter"] = "broken==true"
         self.quads_cli_call("ls_hosts")
 
         assert self._caplog.messages[0] == HOST1
         assert len(self._caplog.messages) == 1
 
     def test_ls_host_filter_bool_false(self, mark_host_broken):
-        self.cli_args["filter"] = f"broken==false"
+        self.cli_args["filter"] = "broken==false"
         self.quads_cli_call("ls_hosts")
 
         assert self._caplog.messages[0] == HOST2
         assert len(self._caplog.messages) == 1
 
     def test_ls_host_filter_bad_model(self, mark_host_broken):
-        self.cli_args["filter"] = f"model==BADMODEL"
+        self.cli_args["filter"] = "model==BADMODEL"
 
         with pytest.raises(CliException) as ex:
             self.quads_cli_call("ls_hosts")
         assert str(ex.value) == "Model type not recognized."
 
     def test_ls_host_filter_bad_op(self):
-        self.cli_args["filter"] = f"model=BADMODEL"
+        self.cli_args["filter"] = "model=BADMODEL"
 
         with pytest.raises(CliException) as ex:
             self.quads_cli_call("ls_hosts")
-        assert (
-            str(ex.value)
-            == "A filter was defined but not parsed correctly. Check filter operator."
-        )
+        assert str(ex.value) == "A filter was defined but not parsed correctly. Check filter operator."
 
     def test_ls_host_filter_bad_param(self):
-        self.cli_args["filter"] = f"badparam==badvalue"
+        self.cli_args["filter"] = "badparam==badvalue"
 
         with pytest.raises(CliException) as ex:
             self.quads_cli_call("ls_hosts")
@@ -203,7 +190,7 @@ class TestHost(TestBase):
         assert len(self._caplog.messages) == 1
 
     def test_ls_host_filter_bad_interface(self):
-        self.cli_args["filter"] = f"interfaces.switch_ip==10.99.99.5"
+        self.cli_args["filter"] = "interfaces.switch_ip==10.99.99.5"
         self.quads_cli_call("ls_hosts")
 
         assert self._caplog.messages[0] == "No hosts found."
@@ -238,10 +225,7 @@ class TestHost(TestBase):
         with pytest.raises(CliException) as ex:
             self.quads_cli_call("processors")
 
-        assert (
-            str(ex.value)
-            == "Missing option. --host option is required for --ls-processors."
-        )
+        assert str(ex.value) == "Missing option. --host option is required for --ls-processors."
 
     def test_ls_processors_no_processor(self):
         self.cli_args["host"] = HOST2

@@ -30,8 +30,8 @@ def finalizer():
 def define_fixture(request):
     request.addfinalizer(finalizer)
 
-    cloud_imported = CloudDao.create_cloud("cloud42")
-    host_import = HostDao.create_host("imported.example.com", MODEL1, HOST_TYPE, CLOUD)
+    CloudDao.create_cloud("cloud42")
+    HostDao.create_host("imported.example.com", MODEL1, HOST_TYPE, CLOUD)
 
 
 class TestExport(TestBase):
@@ -50,16 +50,12 @@ class TestExport(TestBase):
                     f.write(i)
             f.truncate()
 
-        assert list(open(filename)) == list(
-            open(os.path.join(os.path.dirname(__file__), "fixtures/metadata"))
-        )
+        assert list(open(filename)) == list(open(os.path.join(os.path.dirname(__file__), "fixtures/metadata")))
 
 
 class TestImport(TestBase):
     def test_import(self, define_fixture):
-        self.cli_args["metadata"] = os.path.join(
-            os.path.dirname(__file__), "fixtures/metadata_import.yaml"
-        )
+        self.cli_args["metadata"] = os.path.join(os.path.dirname(__file__), "fixtures/metadata_import.yaml")
 
         self.quads_cli_call("define_host_metadata")
 
@@ -100,9 +96,7 @@ class TestImport(TestBase):
 
     def test_import_bad_host(self, define_fixture):
         self.cli_args["force"] = False
-        self.cli_args["metadata"] = os.path.join(
-            os.path.dirname(__file__), "fixtures/badhost_metadata_import.yaml"
-        )
+        self.cli_args["metadata"] = os.path.join(os.path.dirname(__file__), "fixtures/badhost_metadata_import.yaml")
 
         self.quads_cli_call("define_host_metadata")
         assert self._caplog.messages[0] == "Host badhost.example.com not found. Skipping."
@@ -118,13 +112,8 @@ class TestImport(TestBase):
     @patch("quads.cli.cli.open")
     def test_import_io_error(self, mock_load, define_fixture):
         mock_load.side_effect = IOError("IOError")
-        self.cli_args["metadata"] = os.path.join(
-            os.path.dirname(__file__), "fixtures/metadata_import.yaml"
-        )
+        self.cli_args["metadata"] = os.path.join(os.path.dirname(__file__), "fixtures/metadata_import.yaml")
 
         with pytest.raises(CliException) as ex:
             self.quads_cli_call("define_host_metadata")
-        assert (
-            str(ex.value)
-            == f"There was something wrong reading from {self.cli_args['metadata']}"
-        )
+        assert str(ex.value) == f"There was something wrong reading from {self.cli_args['metadata']}"

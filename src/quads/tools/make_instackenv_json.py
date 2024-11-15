@@ -55,7 +55,7 @@ async def make_env_json(filename):
             if not overcloud:
                 overcloud = {"result": "true"}
 
-            if type(overcloud["result"]) != bool:
+            if not isinstance(overcloud["result"], bool):
                 try:
                     _overcloud_result = strtobool(overcloud["result"])
                 except ValueError:

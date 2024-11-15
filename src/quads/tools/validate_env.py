@@ -84,7 +84,8 @@ class Validator(object):  # pragma: no cover
             if time_delta.total_seconds() // 60 > Config["validation_grace_period"]:
                 return True
             logger.warning(
-                "You're still within the configurable validation grace period. Skipping validation for %s." % self.cloud
+                "You're still within the configurable validation grace period. Skipping validation for %s."
+                % self.cloud
             )
         return False
 
@@ -171,7 +172,7 @@ class Validator(object):  # pragma: no cover
     @staticmethod
     async def verify_badfish_creds(host, password):
         try:
-            badfish = await badfish_factory(
+            await badfish_factory(
                 "mgmt-" + host.name,
                 str(Config["ipmi_cloud_username"]),
                 password,
@@ -367,7 +368,7 @@ def main(_args, _loop, _logger=None):  # pragma: no cover
 
     if _args.cloud:
         try:
-            cloud = quads.get_cloud(_args.cloud)
+            quads.get_cloud(_args.cloud)
         except (APIServerException, APIBadRequest) as ex:
             raise CliException(ex)
 

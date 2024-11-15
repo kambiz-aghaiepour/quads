@@ -28,9 +28,7 @@ class TestConfig(unittest.TestCase):
             _ = conf["not_exists"]
 
     def test_load_yaml(self):
-        test_yaml_path = os.path.join(
-            os.path.dirname(__file__), "fixtures/test_conf.yaml"
-        )
+        test_yaml_path = os.path.join(os.path.dirname(__file__), "fixtures/test_conf.yaml")
         assert os.path.exists(test_yaml_path), f"Missing test fixture: {test_yaml_path}"
 
         conf = get_mock_config()

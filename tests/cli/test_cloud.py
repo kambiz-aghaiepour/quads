@@ -242,7 +242,7 @@ class TestCloud(TestBase):
         cloud = CloudDao.get_cloud(MOD_CLOUD)
         assignment = AssignmentDao.get_active_cloud_assignment(cloud)
         assert assignment
-        assert assignment.vlan == None
+        assert assignment.vlan is None
 
     @patch("quads.quads_api.requests.Session.get")
     def test_ls_no_clouds(self, mock_get):
@@ -365,7 +365,7 @@ class TestCloudOnly(TestBase):
         self.cli_args["filter"] = None
         with pytest.raises(CliException) as ex:
             self.quads_cli_call("cloudonly")
-            assert str(ex) == f"Cloud not found: BADCLOUD"
+            assert str(ex) == "Cloud not found: BADCLOUD"
 
     def test_cloud_date(self):
         date = datetime.now().strftime("%Y-%m-%d")
@@ -374,13 +374,6 @@ class TestCloudOnly(TestBase):
         self.cli_args["filter"] = None
         self.quads_cli_call("cloudonly")
         assert self._caplog.messages[0] == f"{HOST1}"
-
-    def test_cloud_no_schedule(self):
-        self.cli_args["cloud"] = MOD_CLOUD
-        self.cli_args["datearg"] = None
-        self.cli_args["filter"] = None
-        self.quads_cli_call("cloudonly")
-        assert len(self._caplog.messages) == 0
 
     def test_cloud_no_schedule(self):
         self.cli_args["cloud"] = MOD_CLOUD

@@ -27,13 +27,13 @@ class QuadsApiAsync:
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(
-                        os.path.join(self.base_url, endpoint),
-                        auth=BasicAuth(self.config.get("quads_api_username"), self.config.get("quads_api_password")),
-                        timeout=60,
-                        verify_ssl=False
+                    os.path.join(self.base_url, endpoint),
+                    auth=BasicAuth(self.config.get("quads_api_username"), self.config.get("quads_api_password")),
+                    timeout=60,
+                    verify_ssl=False,
                 ) as response:
                     result = await response.json()
-        except Exception as ex:
+        except Exception:
             result = {}
         return result
 
@@ -152,10 +152,8 @@ class HostGenerate:
 
         total_current_schedules = self.total_current_schedules
         lines = []
-        __days = []
         non_allocated_count = 0
-        host_blocks = [hosts[i:i + self.BLOCK_SIZE] for i in
-                       range(0, len(hosts), self.BLOCK_SIZE)]
+        host_blocks = [hosts[i : i + self.BLOCK_SIZE] for i in range(0, len(hosts), self.BLOCK_SIZE)]
 
         for host_block in host_blocks:
             tasks = [self.process_hosts(host, _days, _month, _year) for host in host_block]
@@ -247,4 +245,3 @@ if __name__ == "__main__":
 
     generate = HostGenerate()
     asyncio.run(generate.generator(host_file, days, month, year, gentime))
-

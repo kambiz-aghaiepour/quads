@@ -73,10 +73,9 @@ class TestLsSwitchConf(object):
         verify(Args())
         info = [info[0][0] for info in mock_logger.info.call_args_list]
         assert "Interface em1 appears to be a member of VLAN 1130" in info
-        assert (
-            "Could not determine the previous VLAN member for em2, switch 192.168.1.2, switch port et-0/0/0:2 "
-            in [warn[0][0] for warn in mock_logger.warning.call_args_list]
-        )
+        assert "Could not determine the previous VLAN member for em2, switch 192.168.1.2, switch port et-0/0/0:2 " in [
+            warn[0][0] for warn in mock_logger.warning.call_args_list
+        ]
         assert "Interface em3 appears to be a member of VLAN 1134" in info
         InterfaceDao.delete_interface(interface1.id)
         InterfaceDao.delete_interface(interface2.id)
@@ -98,12 +97,8 @@ class TestLsSwitchConf(object):
         host_name = DEFINE_HOST
         cloud = CloudDao.get_cloud(cloud_name)
         HostDao.create_host(host_name, "r640", "unittest", cloud_name)
-        vlan = VlanDao.create_vlan(
-            "192.168.1.1", 122, "192.168.1.1/22", "255.255.255.255", 1
-        )
-        AssignmentDao.create_assignment(
-            "test", "test", "1234", 0, False, [""], cloud.name, vlan.vlan_id
-        )
+        vlan = VlanDao.create_vlan("192.168.1.1", 122, "192.168.1.1/22", "255.255.255.255", 1)
+        AssignmentDao.create_assignment("test", "test", "1234", 0, False, [""], cloud.name, vlan.vlan_id)
 
         class Args:
             cloud = cloud_name
@@ -116,9 +111,7 @@ class TestLsSwitchConf(object):
     @patch("quads.tools.ls_switch_conf.logger")
     @patch("quads.tools.external.ssh_helper.SSHConfig")
     @patch("quads.tools.external.ssh_helper.SSHClient")
-    def test_verify_ls_switch_conf_one_interface(
-        self, mock_client, mock_config, mock_logger
-    ):
+    def test_verify_ls_switch_conf_one_interface(self, mock_client, mock_config, mock_logger):
         mock_config.return_value = MagicMock()
         stdout_mock = MagicMock()
         stdout_mock.readlines.side_effect = [

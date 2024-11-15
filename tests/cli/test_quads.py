@@ -44,7 +44,7 @@ class TestQuads(TestBase):
     @patch("quads.quads_api.requests.Session.get")
     def test_default_action_400_exception(self, mock_get):
         mock_get.return_value.status_code = 400
-        with pytest.raises(CliException) as ex:
+        with pytest.raises(CliException):
             self.quads_cli_call(None)
 
     def test_default_action_date(self):
@@ -54,10 +54,7 @@ class TestQuads(TestBase):
 
     def test_version(self):
         self.quads_cli_call("version")
-        assert (
-            self._caplog.messages[0]
-            == f'"QUADS version {Config.QUADSVERSION} {Config.QUADSCODENAME}"\n'
-        )
+        assert self._caplog.messages[0] == f'"QUADS version {Config.QUADSVERSION} {Config.QUADSCODENAME}"\n'
 
     @patch("quads.quads_api.requests.Session.get")
     def test_version_exception(self, mock_get):

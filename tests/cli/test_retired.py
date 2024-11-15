@@ -41,10 +41,7 @@ class TestRetired(TestBase):
 
         self.quads_cli_call("retire")
 
-        assert (
-            self._caplog.messages[0]
-            == f"Host {HOST1} has already been marked as retired"
-        )
+        assert self._caplog.messages[0] == f"Host {HOST1} has already been marked as retired"
 
         host = HostDao.get_host(HOST1)
         assert host.retired
@@ -64,10 +61,7 @@ class TestRetired(TestBase):
 
         self.quads_cli_call("unretire")
 
-        assert (
-            self._caplog.messages[0]
-            == f"Host {HOST1} has already been marked unretired"
-        )
+        assert self._caplog.messages[0] == f"Host {HOST1} has already been marked unretired"
 
         host = HostDao.get_host(HOST1)
         assert not host.retired

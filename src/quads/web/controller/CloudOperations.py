@@ -36,7 +36,7 @@ class CloudOperations:
         managed_hosts = {}
         _ass_obj = self.__quads_api.get_active_cloud_assignment(cloud)
         _hosts = self.__quads_api.filter_hosts({"cloud": cloud, "retired": False, "broken": False})
-        
+
         if _ass_obj:
             managed_hosts = {
                 "name": cloud,
@@ -53,7 +53,7 @@ class CloudOperations:
                 "description": "Spare Pool",
                 "hosts": [host.as_dict() for host in _hosts],
             }
-            
+
         return managed_hosts
 
     def get_daily_utilization(self) -> int:
@@ -76,7 +76,9 @@ class CloudOperations:
         for cloud in self.__get_cloud_summary():
             if cloud.get("count") > 0:
                 cloud_name = cloud.get("name")
-                cloud["description"] = cloud["description"] if cloud["description"] else Config["spare_pool_description"]
+                cloud["description"] = (
+                    cloud["description"] if cloud["description"] else Config["spare_pool_description"]
+                )
                 is_valid = cloud["validated"] or cloud_name == "cloud01"
                 percent = 100
                 if not is_valid:
@@ -85,12 +87,16 @@ class CloudOperations:
                     percent = (moved_hosts / scheduled_hosts) * 100
                 cloud["is_valid"] = is_valid
                 cloud["percent"] = int(percent)
-                if cloud_name != 'cloud01':
+                if cloud_name != "cloud01":
                     if Config["openstack_management"]:
-                        cloud["href_url_openstack"] = f"{Config['quads_url']}/instack/{cloud_name}_instackenv.json" if is_valid else "#"
+                        cloud["href_url_openstack"] = (
+                            f"{Config['quads_url']}/instack/{cloud_name}_instackenv.json" if is_valid else "#"
+                        )
                         cloud["href_url_text_openstack"] = "download" if is_valid else "validating..."
                     if Config["openshift_management"]:
-                        cloud["href_url_openshift"] = f"{Config['quads_url']}/instack/{cloud_name}_ocpinventory.json" if is_valid else "#"
+                        cloud["href_url_openshift"] = (
+                            f"{Config['quads_url']}/instack/{cloud_name}_ocpinventory.json" if is_valid else "#"
+                        )
                         cloud["href_url_text_openshift"] = "download" if is_valid else "validating..."
                     cloud["href_color"] = "link-success" if is_valid else "link-danger"
                 clouds_summary.append(cloud)
@@ -147,7 +153,11 @@ class CloudOperations:
         """
         all_hosts = self.__get_all_hosts()
         blacklist = re.compile("|".join([re.escape(word) for word in exclude_hosts.split("|")]))
-        mgmt_hosts = [property.get("sp_name") for host, property in all_hosts.items() if property.get("sp_name", False) and not blacklist.search(host)]
+        mgmt_hosts = [
+            property.get("sp_name")
+            for host, property in all_hosts.items()
+            if property.get("sp_name", False) and not blacklist.search(host)
+        ]
         unmanaged_hosts = []
         for host in mgmt_hosts:
             real_host = host[5:]

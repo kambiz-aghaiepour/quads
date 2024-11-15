@@ -14,20 +14,17 @@ class TestMemory(TestBase):
 
         self.quads_cli_call("memory")
 
-        assert self._caplog.messages[0] == f"memory: DIMM1"
-        assert self._caplog.messages[1] == f"  size: 2048"
-        assert self._caplog.messages[2] == f"memory: DIMM2"
-        assert self._caplog.messages[3] == f"  size: 2048"
+        assert self._caplog.messages[0] == "memory: DIMM1"
+        assert self._caplog.messages[1] == "  size: 2048"
+        assert self._caplog.messages[2] == "memory: DIMM2"
+        assert self._caplog.messages[3] == "  size: 2048"
 
     def test_ls_memory_missing_host(self):
         if self.cli_args.get("host"):
             self.cli_args.pop("host")
         with pytest.raises(CliException) as ex:
             self.quads_cli_call("memory")
-        assert (
-            str(ex.value)
-            == "Missing option. --host option is required for --ls-memory."
-        )
+        assert str(ex.value) == "Missing option. --host option is required for --ls-memory."
 
     def test_ls_memory_bad_host(self):
         self.cli_args["host"] = "BADHOST"

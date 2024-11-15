@@ -29,11 +29,7 @@ def get_moves() -> Response:
         for host in _hosts:
             _current_schedule = ScheduleDao.get_current_schedule(host=host, date=_date)
             _host_current_cloud = host.cloud
-            _new_cloud = (
-                _current_schedule[0].assignment.cloud
-                if _current_schedule
-                else host.default_cloud
-            )
+            _new_cloud = _current_schedule[0].assignment.cloud if _current_schedule else host.default_cloud
             if _new_cloud == _host_current_cloud:
                 continue
             result.append(
@@ -47,7 +43,7 @@ def get_moves() -> Response:
         response = {
             "status_code": 500,
             "error": "Internal Server Error",
-            "message": f"Something went wrong, please try again.",
+            "message": "Something went wrong, please try again.",
         }
         return make_response(jsonify(response), 500)
     return jsonify(result)

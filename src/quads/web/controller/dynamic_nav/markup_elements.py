@@ -27,6 +27,7 @@ class NavigationItem(object):
     Base for all items in a Navigation.
     Every item inside a navigational view should derive from this class.
     """
+
     active = False
 
     def render(self, renderer=None, **kwargs):
@@ -52,6 +53,7 @@ class View(NavigationItem):
     """
     This
     """
+
     ignore_query = True
 
     def __init__(self, text, endpoint, **kwargs):
@@ -85,6 +87,7 @@ class Subgroup(NavigationItem):
     """
     Usually used to express a submenu.
     """
+
     def __init__(self, title, *items):
         self.title = title
         self.items = list(items)

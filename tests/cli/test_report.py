@@ -90,7 +90,6 @@ class TestReport(TestBase):
     def test_report_detailed(self, remove_fixture):
         today = datetime.now()
 
-        future = today + timedelta(weeks=2)
         # TODO: Fix this test
         self.cli_args["months"] = None
         self.cli_args["year"] = today.year

@@ -155,7 +155,7 @@ class QuadsCli:
                     except ValueError:
                         value = v
 
-                    if type(value) == str:
+                    if isinstance(value, str):
                         if value.lower() == "false":
                             value = False
                         elif value.lower() == "true":
@@ -179,7 +179,7 @@ class QuadsCli:
                                 self.logger.warning(f"Accepted model names are: {conf['models']}")
                                 raise CliException("Model type not recognized.")
 
-                        if type(value) == str:
+                        if isinstance(value, str):
                             value = value.upper()
                         query = {f"{'__'.join(keys)}{op_suffix}": value}
                         kwargs.update(query)
@@ -203,7 +203,7 @@ class QuadsCli:
                     self.logger.info("Successful request")
                 if js.get("result"):
                     for result in js["result"]:
-                        if type(result) == list:
+                        if isinstance(result, list):
                             for line in result:
                                 self.logger.info(line)
                         else:
@@ -515,7 +515,7 @@ class QuadsCli:
         omit_cloud_arg = self.cli_args.get("omitcloud")
         if omit_cloud_arg:
             try:
-                omit_cloud = self.quads.get_cloud(omit_cloud_arg)
+                self.quads.get_cloud(omit_cloud_arg)
             except (APIServerException, APIBadRequest) as ex:
                 raise CliException(str(ex))
 
@@ -633,7 +633,9 @@ class QuadsCli:
 
         non_extendable = []
         for schedule in schedules:
-            end_date = schedule.end + timedelta(weeks=weeks) if weeks else datetime.strptime(date_arg, "%Y-%m-%d %H:%M")
+            end_date = (
+                schedule.end + timedelta(weeks=weeks) if weeks else datetime.strptime(date_arg, "%Y-%m-%d %H:%M")
+            )
             data = {
                 "start": ":".join(schedule.end.isoformat().split(":")[:-1]),
                 "end": ":".join(end_date.isoformat().split(":")[:-1]),
@@ -697,7 +699,6 @@ class QuadsCli:
         host_name = self.cli_args.get("host")
         check = self.cli_args.get("check")
 
-        time_delta = timedelta()
         _date = None
         end_date = None
 
@@ -713,7 +714,6 @@ class QuadsCli:
             except ValueError:
                 raise CliException("The value of --weeks must be an integer")
 
-            time_delta = timedelta(weeks=weeks)
         elif date_arg:
             _date = datetime.strptime(self.cli_args.get("datearg"), "%Y-%m-%d %H:%M")
         elif now:
@@ -899,7 +899,7 @@ class QuadsCli:
         if self.cli_args.get("vlan"):
             try:
                 clean_data["vlan"] = int(self.cli_args.get("vlan"))
-            except (TypeError, ValueError) as ཀʖ̯ཀ:  # pragma: no cover
+            except (TypeError, ValueError):  # pragma: no cover
                 clean_data["vlan"] = None
 
         if "wipe" in self.cli_args:
@@ -972,7 +972,7 @@ class QuadsCli:
         data = {}
         for key, value in metadata.items():
             if key != "default_cloud":
-                if type(value) != list:
+                if type(value) is not list:
                     data[key] = value
 
             elif key == "default_cloud":
@@ -1034,7 +1034,7 @@ class QuadsCli:
                     ready_defined.append(key)
                     if not self.cli_args.get("force"):  # pragma: no cover
                         continue
-                    if type(value) == list:
+                    if isinstance(value, list):
                         if host:
                             self.clear_field(host, key)
                         dispatch_func = dispatch_create.get(key)
@@ -1172,7 +1172,7 @@ class QuadsCli:
 
         if self.cli_args.get("omitcloud"):
             try:
-                omit_cloud = self.quads.get_cloud(self.cli_args.get("omitcloud"))
+                self.quads.get_cloud(self.cli_args.get("omitcloud"))
             except (APIServerException, APIBadRequest) as ex:  # pragma: no cover
                 raise CliException(str(ex))
 
@@ -1183,7 +1183,9 @@ class QuadsCli:
                 except (APIServerException, APIBadRequest) as ex:  # pragma: no cover
                     raise CliException(str(ex))
                 if host.cloud.name == self.cli_args.get("omitcloud"):
-                    self.logger.info("Host is in part of the cloud specified with --omit-cloud. Nothing has been done.")
+                    self.logger.info(
+                        "Host is in part of the cloud specified with --omit-cloud. Nothing has been done."
+                    )
             else:
                 data = {
                     "cloud": self.cli_args.get("schedcloud"),
@@ -1270,7 +1272,7 @@ class QuadsCli:
                 template = Template(_file.read())
 
             try:
-                _cloud = self.quads.get_cloud(self.cli_args.get("schedcloud"))
+                self.quads.get_cloud(self.cli_args.get("schedcloud"))
             except (APIServerException, APIBadRequest) as ex:  # pragma: no cover
                 raise CliException(str(ex))
             jira_docs_links = conf["jira_docs_links"].split(",")
@@ -1417,7 +1419,7 @@ class QuadsCli:
             "if_name": self.cli_args.get("ifname"),
         }
         try:
-            host = self.quads.get_host(self.cli_args.get("host"))
+            self.quads.get_host(self.cli_args.get("host"))
         except (APIServerException, APIBadRequest) as ex:  # pragma: no cover
             raise CliException(str(ex))
 
@@ -1444,12 +1446,9 @@ class QuadsCli:
         _ifname = self.cli_args.get("ifname", None)
         _ifip = self.cli_args.get("ifip", None)
         _ifport = self.cli_args.get("ifport", None)
-        _ifpxe = self.cli_args.get("ifpxe", False)
         _ifbiosid = self.cli_args.get("ifbiosid", None)
         _ifspeed = self.cli_args.get("ifspeed", None)
         _ifvendor = self.cli_args.get("ifvendor", None)
-        _ifmaintenance = self.cli_args.get("ifmaintenance", False)
-        _force = self.cli_args.get("force", False)
         _host = self.cli_args.get("host", None)
         # TODO: fix all
         if _host is None or _ifname is None:

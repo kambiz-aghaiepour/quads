@@ -78,7 +78,7 @@ def create_app(test_config=None) -> Flask:
         if not role:
             print(f"Role {args.role} not found")
             return
-        
+
         # Your command logic here
         create_user(user_datastore, args.username, args.password, [role])
 

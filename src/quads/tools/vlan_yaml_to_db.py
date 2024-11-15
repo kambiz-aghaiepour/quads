@@ -32,7 +32,7 @@ def main(_args):
         if vlans:
             for vlan, properties in vlans.items():
                 try:
-                    vlan = quads.get_vlan(properties["vlan_id"])
+                    quads.get_vlan(properties["vlan_id"])
                 except (APIServerException, APIBadRequest):
                     quads.create_vlan(properties)
                     logger.info("Inserted vlan: %s" % properties["vlan_id"])

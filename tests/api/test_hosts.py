@@ -500,7 +500,7 @@ class TestDeleteHosts:
             )
         )
         assert response.status_code == 200
-        assert response.json["message"] == f"Host deleted"
+        assert response.json["message"] == "Host deleted"
 
     @pytest.mark.parametrize("prefill", prefill_settings, indirect=True)
     def test_invalid_undefined_host(self, test_client, auth, prefill):

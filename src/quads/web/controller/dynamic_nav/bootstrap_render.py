@@ -3,7 +3,7 @@ from quads.web.controller.dynamic_nav.markup_elements import SubMenuGroup
 
 class HTMLElements:
     class nav:
-        def __init__(self, element: any = '', *args, **kwargs):
+        def __init__(self, element: any = "", *args, **kwargs):
             items = [f'{k}="{v}"' for k, v in kwargs.items()]
             self.elements = [f'<nav {" ".join(items)}>', str(element)]
 
@@ -15,7 +15,7 @@ class HTMLElements:
 
     class ul:
 
-        def __init__(self, _class: str = '', *args, **kwargs):
+        def __init__(self, _class: str = "", *args, **kwargs):
             items = [f'{k}="{v}"' for k, v in kwargs.items()]
             self.element = [f'<ul class="{_class}" {" ".join(items)}>']
 
@@ -23,10 +23,10 @@ class HTMLElements:
             self.element.append(str(element))
 
         def __str__(self):
-            return ''.join(self.element + ["</ul>"])
+            return "".join(self.element + ["</ul>"])
 
     class li:
-        def __init__(self, element: any, _class: str = '', *args, **kwargs):
+        def __init__(self, element: any, _class: str = "", *args, **kwargs):
             element_string = ""
             if isinstance(element, tuple) or isinstance(element, list):
                 for item in element:
@@ -40,7 +40,7 @@ class HTMLElements:
 
     class span:
 
-        def __init__(self, _class: str = '', *args, **kwargs):
+        def __init__(self, _class: str = "", *args, **kwargs):
             items = [f'{k.replace("_", "-")}="{v}"' for k, v in kwargs.items()]
             if args:
                 self.element = f'<span class="{_class}" {" ".join(items)}>{"".join(args)}</span>'
@@ -51,17 +51,15 @@ class HTMLElements:
             return self.element
 
     class div:
-        def __init__(self, element: any, groups: any = '', _class: str = '', *args, **kwargs):
+        def __init__(self, element: any, groups: any = "", _class: str = "", *args, **kwargs):
             items = [f'{k.replace("_", "-")}="{v}"' for k, v in kwargs.items()]
-            self.element = f'<div class="{_class}" {" ".join(items)}>{str(element)}' \
-                           f'{str(groups)}' \
-                           f'</div>'
+            self.element = f'<div class="{_class}" {" ".join(items)}>{str(element)}' f"{str(groups)}" f"</div>"
 
         def __str__(self):
             return self.element
 
     class a:
-        def __init__(self, href: str, title: str, _class: str = '', *args, **kwargs):
+        def __init__(self, href: str, title: str, _class: str = "", *args, **kwargs):
             items = [f'{k.replace("_", "-")}="{v}"' for k, v in kwargs.items()]
             self.element = f'<a href="{href}" class="{_class}" {" ".join(items)}>{title}</a>'
 
@@ -69,7 +67,7 @@ class HTMLElements:
             return self.element
 
     class button:
-        def __init__(self, element: any = '', _class: str = '', *args, **kwargs):
+        def __init__(self, element: any = "", _class: str = "", *args, **kwargs):
             items = [f'{k.replace("_", "-")}="{v}"' for k, v in kwargs.items()]
             self.element = f'<button class="{_class}" {" ".join(items)}>{str(element)}</button>'
 
@@ -98,13 +96,12 @@ class BootStrap5Render:
         else:
             mro = type(node).mro()
         for cls in mro:
-            meth = getattr(self, 'visit_' + cls.__name__, None)
+            meth = getattr(self, "visit_" + cls.__name__, None)
             if meth is None:
                 continue
             return meth(node)
 
-        raise NotImplementedError('No visitation method visit_{}'
-                                  .format(node.__class__.__name__))
+        raise NotImplementedError("No visitation method visit_{}".format(node.__class__.__name__))
 
     def visit_Link(self, node):
         """Returns hrefs matching url."""
@@ -121,12 +118,16 @@ class BootStrap5Render:
         kwargs["class"] = " ".join(add_class + ["navbar", "navbar-expand-lg"])
         icon = self.elements.span(_class="navbar-toggler-icon")
 
-        button = self.elements.button(element=icon, _class="navbar-toggler btn",
-                                      data_bs_toggle="collapse",
-                                      data_bs_target="#navbarSupportedContent")
+        button = self.elements.button(
+            element=icon,
+            _class="navbar-toggler btn",
+            data_bs_toggle="collapse",
+            data_bs_target="#navbarSupportedContent",
+        )
         cont = self.elements.nav(button, **kwargs)
-        ul = self.elements.ul(id="navbarSupportedContent",
-                              _class=" ".join(add_class + ["nav collapse navbar-collapse"]))
+        ul = self.elements.ul(
+            id="navbarSupportedContent", _class=" ".join(add_class + ["nav collapse navbar-collapse"])
+        )
 
         for item in node.items:
             ul.add(self.elements.li(self.visit(item), _class="nav-item"))
@@ -151,7 +152,7 @@ class BootStrap5Render:
             title=node.title,
             href="#",
             _class="nav-link link-secondary-hover dropdown-toggle",
-            data_bs_toggle="dropdown"
+            data_bs_toggle="dropdown",
         )
 
         for item in node.items:

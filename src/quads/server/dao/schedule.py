@@ -120,7 +120,7 @@ class ScheduleDao(BaseDao):
             if not field:
                 raise InvalidArgument(f"{k} is not a valid field.")
             try:
-                if type(field.columns[0].type) == Boolean:
+                if type(field.columns[0].type) is Boolean:
                     value = value.lower() in ["true", "y", 1, "yes"]
             except AttributeError:
                 if first_field.lower() == "host":

@@ -141,7 +141,7 @@ def update_interface(hostname: str) -> Response:
     for key in keys:
         value = data.get(key)
         if value:
-            if type(value) == str:
+            if isinstance(value, str):
                 if value.lower() in ["true", "false"]:
                     value = eval(value.lower().capitalize())
             update_fields[key] = value

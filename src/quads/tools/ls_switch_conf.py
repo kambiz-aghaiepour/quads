@@ -59,7 +59,7 @@ def verify(args):
                 ssh_helper.disconnect()
 
                 logger.info(
-                    f"Interface em{i+1} appears to be a member of VLAN {vlan_member}",
+                    f"Interface em{i + 1} appears to be a member of VLAN {vlan_member}",
                 )
 
         else:

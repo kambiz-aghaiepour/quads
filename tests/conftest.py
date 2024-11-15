@@ -41,9 +41,7 @@ class AuthActions(object):
         self._username = ""
 
     def login(self, username="grafuls@redhat.com", password="password"):
-        valid_credentials = base64.b64encode(
-            f"{username}:{password}".encode("utf-8")
-        ).decode("utf-8")
+        valid_credentials = base64.b64encode(f"{username}:{password}".encode("utf-8")).decode("utf-8")
         response = unwrap_json(
             self._client.post(
                 "/api/v3/login",
@@ -116,7 +114,7 @@ def prefill(test_client, auth, request):
     if "vlans" in request.param:
         for i in range(1, 4):
             test_client.post(
-                f"/api/v3/vlans",
+                "/api/v3/vlans",
                 json=eval(f"VLAN_{i}_REQUEST"),
                 headers=auth_header,
             )
@@ -136,7 +134,6 @@ def prefill(test_client, auth, request):
                 headers=auth_header,
             )
     if "interfaces" in request.param:
-        _ = INTERFACE_1_REQUEST
         for i in range(1, 5):
             interface_request = eval(f"INTERFACE_{i}_REQUEST")
             test_client.post(
@@ -164,7 +161,7 @@ def prefill(test_client, auth, request):
         for i in range(1, 3):
             assignment_request = eval(f"ASSIGNMENT_{i}_REQUEST")
             test_client.post(
-                f"/api/v3/assignments",
+                "/api/v3/assignments",
                 json=assignment_request,
                 headers=auth_header,
             )
@@ -172,7 +169,7 @@ def prefill(test_client, auth, request):
         for i in range(1, 3):
             schedule_request = eval(f"SCHEDULE_{i}_REQUEST")
             test_client.post(
-                f"/api/v3/schedules",
+                "/api/v3/schedules",
                 json=schedule_request,
                 headers=auth_header,
             )

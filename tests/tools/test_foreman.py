@@ -83,9 +83,7 @@ class TestForeman(object):
     @pytest.mark.asyncio
     async def test_set_host_parameter_true(self, get_session, put_session):
         get_resp = AsyncMock()
-        get_resp.json.return_value = {
-            "results": [{"name": "host.example.com", "id": "host1"}]
-        }
+        get_resp.json.return_value = {"results": [{"name": "host.example.com", "id": "host1"}]}
         get_session.return_value.__aenter__.return_value = get_resp
 
         put_resp = AsyncMock()
@@ -103,9 +101,7 @@ class TestForeman(object):
     @pytest.mark.asyncio
     async def test_set_host_parameter_false(self, get_session, put_session):
         get_resp = AsyncMock()
-        get_resp.json.return_value = {
-            "results": [{"name": "host.example.com", "id": "host1"}]
-        }
+        get_resp.json.return_value = {"results": [{"name": "host.example.com", "id": "host1"}]}
         get_session.return_value.__aenter__.return_value = get_resp
 
         put_resp = AsyncMock()
@@ -123,9 +119,7 @@ class TestForeman(object):
     async def test_put_host_parameter_raise_exception(self, put_session):
         put_session.side_effect = Exception("Simulated error")
         foreman = Foreman("https://example.com", "username", "password")
-        response = await foreman.put_host_parameter(
-            host_id="host1", parameter_id="host1", value="host1"
-        )
+        response = await foreman.put_host_parameter(host_id="host1", parameter_id="host1", value="host1")
         assert not response
 
     @patch("quads.tools.external.foreman.aiohttp.ClientSession.post")
@@ -136,9 +130,7 @@ class TestForeman(object):
         post_resp.json.return_value = {}
         post_session.return_value.__aenter__.return_value = post_resp
         foreman = Foreman("https://example.com", "username", "password")
-        response = await foreman.post_host_parameter(
-            host_id="host1", name="host.example.com", value="host1"
-        )
+        response = await foreman.post_host_parameter(host_id="host1", name="host.example.com", value="host1")
         assert response
 
     @patch("quads.tools.external.foreman.aiohttp.ClientSession.post")
@@ -149,9 +141,7 @@ class TestForeman(object):
         post_resp.json.return_value = {}
         post_session.return_value.__aenter__.return_value = post_resp
         foreman = Foreman("https://example.com", "username", "password")
-        response = await foreman.post_host_parameter(
-            host_id="host1", name="host.example.com", value="host1"
-        )
+        response = await foreman.post_host_parameter(host_id="host1", name="host.example.com", value="host1")
         assert not response
 
     @patch("quads.tools.external.foreman.aiohttp.ClientSession.post")
@@ -159,9 +149,7 @@ class TestForeman(object):
     async def test_post_host_parameter_raise_exception(self, post_session):
         post_session.side_effect = Exception("Simulated error")
         foreman = Foreman("https://example.com", "username", "password")
-        response = await foreman.post_host_parameter(
-            host_id="host1", name="host.example.com", value="host1"
-        )
+        response = await foreman.post_host_parameter(host_id="host1", name="host.example.com", value="host1")
         assert not response
 
     @patch("quads.tools.external.foreman.aiohttp.ClientSession.put")
@@ -172,9 +160,7 @@ class TestForeman(object):
         put_resp.json.return_value = {}
         put_session.return_value.__aenter__.return_value = put_resp
         foreman = Foreman("https://example.com", "username", "password")
-        response = await foreman.update_user_password(
-            login="user1", password="password"
-        )
+        response = await foreman.update_user_password(login="user1", password="password")
         assert response
 
     @patch("quads.tools.external.foreman.aiohttp.ClientSession.put")
@@ -182,9 +168,7 @@ class TestForeman(object):
     async def test_update_user_password_raise_exception(self, put_session):
         put_session.side_effect = Exception("Simulated error")
         foreman = Foreman("https://example.com", "username", "password")
-        response = await foreman.update_user_password(
-            login="user1", password="password"
-        )
+        response = await foreman.update_user_password(login="user1", password="password")
         assert not response
 
     @patch("quads.tools.external.foreman.aiohttp.ClientSession.put")
@@ -195,9 +179,7 @@ class TestForeman(object):
         put_resp.json.return_value = {}
         put_session.return_value.__aenter__.return_value = put_resp
         foreman = Foreman("https://example.com", "username", "password")
-        response = await foreman.update_user_password(
-            login="user1", password="password"
-        )
+        response = await foreman.update_user_password(login="user1", password="password")
         assert not response
 
     @patch("quads.tools.external.foreman.aiohttp.ClientSession.put")
@@ -205,9 +187,7 @@ class TestForeman(object):
     async def test_put_elements_raise_exception(self, put_session):
         put_session.side_effect = Exception("Simulated error")
         foreman = Foreman("https://example.com", "username", "password")
-        response = await foreman.put_elements(
-            element_name="test", element_id="test1", params="test"
-        )
+        response = await foreman.put_elements(element_name="test", element_id="test1", params="test")
         assert not response
 
     @patch("quads.tools.external.foreman.aiohttp.ClientSession.put")
@@ -218,9 +198,7 @@ class TestForeman(object):
         put_resp.json.return_value = {}
         put_session.return_value.__aenter__.return_value = put_resp
         foreman = Foreman("https://example.com", "username", "password")
-        response = await foreman.put_elements(
-            element_name="test", element_id="test1", params="test"
-        )
+        response = await foreman.put_elements(element_name="test", element_id="test1", params="test")
         assert not response
 
     @patch("quads.tools.external.foreman.aiohttp.ClientSession.get")
@@ -291,9 +269,7 @@ class TestForeman(object):
     @pytest.mark.asyncio
     async def test_get_host_id(self, session_mock):
         resp = AsyncMock()
-        resp.json.return_value = {
-            "results": [{"name": "host.example.com", "id": "host1"}]
-        }
+        resp.json.return_value = {"results": [{"name": "host.example.com", "id": "host1"}]}
 
         session_mock.return_value.__aenter__.return_value = resp
 
@@ -307,9 +283,7 @@ class TestForeman(object):
     @pytest.mark.asyncio
     async def test_get_host_parameter_id(self, session_mock):
         resp = AsyncMock()
-        resp.json.return_value = {
-            "results": [{"name": "host.example.com", "id": "host1"}]
-        }
+        resp.json.return_value = {"results": [{"name": "host.example.com", "id": "host1"}]}
         session_mock.return_value.__aenter__.return_value = resp
 
         foreman = Foreman("https://example.com", "username", "password")
@@ -333,9 +307,7 @@ class TestForeman(object):
     @pytest.mark.asyncio
     async def test_get_role_id(self, session_mock):
         resp = AsyncMock()
-        resp.json.return_value = {
-            "results": [{"name": "unittest-role", "id": "mock1-role"}]
-        }
+        resp.json.return_value = {"results": [{"name": "unittest-role", "id": "mock1-role"}]}
         session_mock.return_value.__aenter__.return_value = resp
 
         foreman = Foreman("https://example.com", "username", "password")
@@ -346,26 +318,18 @@ class TestForeman(object):
     @pytest.mark.asyncio
     async def test_get_host_param(self, session_mock):
         resp = AsyncMock()
-        resp.json.return_value = {
-            "results": [
-                {"name": "host.example.com", "id": "host1", "value": "test-host"}
-            ]
-        }
+        resp.json.return_value = {"results": [{"name": "host.example.com", "id": "host1", "value": "test-host"}]}
         session_mock.return_value.__aenter__.return_value = resp
 
         foreman = Foreman("https://example.com", "username", "password")
-        host_param = await foreman.get_host_param(
-            host_name="host.example.com", param="host.example.com"
-        )
+        host_param = await foreman.get_host_param(host_name="host.example.com", param="host.example.com")
         assert host_param == {"result": "test-host"}
 
     @patch("quads.tools.external.foreman.aiohttp.ClientSession.get")
     @pytest.mark.asyncio
     async def test_get_host_build_status_true(self, session_mock):
         resp = AsyncMock()
-        resp.json.return_value = {
-            "results": [{"name": "host.example.com", "build_status": True}]
-        }
+        resp.json.return_value = {"results": [{"name": "host.example.com", "build_status": True}]}
         session_mock.return_value.__aenter__.return_value = resp
 
         foreman = Foreman("https://example.com", "username", "password")
@@ -389,16 +353,12 @@ class TestForeman(object):
         session_mock.return_value.__aenter__.return_value = resp
 
         foreman = Foreman("https://example.com", "username", "password")
-        extraneous_interfaces = await foreman.get_host_extraneous_interfaces(
-            host_id="host1"
-        )
+        extraneous_interfaces = await foreman.get_host_extraneous_interfaces(host_id="host1")
         assert extraneous_interfaces == []
 
     @patch("quads.tools.external.foreman.aiohttp.ClientSession.get")
     @pytest.mark.asyncio
-    async def test_get_host_extraneous_interfaces_with_mgmt_with_primary_false(
-        self, session_mock
-    ):
+    async def test_get_host_extraneous_interfaces_with_mgmt_with_primary_false(self, session_mock):
         resp = AsyncMock()
         resp.json.return_value = {
             "results": [
@@ -413,16 +373,12 @@ class TestForeman(object):
         session_mock.return_value.__aenter__.return_value = resp
 
         foreman = Foreman("https://example.com", "username", "password")
-        extraneous_interfaces = await foreman.get_host_extraneous_interfaces(
-            host_id="host1"
-        )
+        extraneous_interfaces = await foreman.get_host_extraneous_interfaces(host_id="host1")
         assert extraneous_interfaces == []
 
     @patch("quads.tools.external.foreman.aiohttp.ClientSession.get")
     @pytest.mark.asyncio
-    async def test_get_host_extraneous_interfaces_with_mgmt_with_primary_true(
-        self, session_mock
-    ):
+    async def test_get_host_extraneous_interfaces_with_mgmt_with_primary_true(self, session_mock):
         resp = AsyncMock()
         resp.json.return_value = {
             "results": [
@@ -437,16 +393,12 @@ class TestForeman(object):
         session_mock.return_value.__aenter__.return_value = resp
 
         foreman = Foreman("https://example.com", "username", "password")
-        extraneous_interfaces = await foreman.get_host_extraneous_interfaces(
-            host_id="host1"
-        )
+        extraneous_interfaces = await foreman.get_host_extraneous_interfaces(host_id="host1")
         assert extraneous_interfaces == []
 
     @patch("quads.tools.external.foreman.aiohttp.ClientSession.get")
     @pytest.mark.asyncio
-    async def test_get_host_extraneous_interfaces_without_mgmt_with_primary_false(
-        self, session_mock
-    ):
+    async def test_get_host_extraneous_interfaces_without_mgmt_with_primary_false(self, session_mock):
         resp = AsyncMock()
         resp.json.return_value = {
             "results": [
@@ -461,9 +413,7 @@ class TestForeman(object):
         session_mock.return_value.__aenter__.return_value = resp
 
         foreman = Foreman("https://example.com", "username", "password")
-        extraneous_interfaces = await foreman.get_host_extraneous_interfaces(
-            host_id="host1"
-        )
+        extraneous_interfaces = await foreman.get_host_extraneous_interfaces(host_id="host1")
         assert extraneous_interfaces == [
             {
                 "name": "host.example.com",
@@ -475,9 +425,7 @@ class TestForeman(object):
 
     @patch("quads.tools.external.foreman.aiohttp.ClientSession.get")
     @pytest.mark.asyncio
-    async def test_get_host_extraneous_interfaces_without_mgmt_with_primary_true(
-        self, session_mock
-    ):
+    async def test_get_host_extraneous_interfaces_without_mgmt_with_primary_true(self, session_mock):
         resp = AsyncMock()
         resp.json.return_value = {
             "results": [
@@ -492,16 +440,12 @@ class TestForeman(object):
         session_mock.return_value.__aenter__.return_value = resp
 
         foreman = Foreman("https://example.com", "username", "password")
-        extraneous_interfaces = await foreman.get_host_extraneous_interfaces(
-            host_id="host1"
-        )
+        extraneous_interfaces = await foreman.get_host_extraneous_interfaces(host_id="host1")
         assert extraneous_interfaces == []
 
     @patch("quads.tools.external.foreman.aiohttp.ClientSession.get")
     @pytest.mark.asyncio
-    async def test_remove_extraneous_interfaces_without_semaphore(
-        self, get_session_mock, caplog
-    ):
+    async def test_remove_extraneous_interfaces_without_semaphore(self, get_session_mock, caplog):
         get_resp = AsyncMock()
         get_resp.json.return_value = {
             "results": [
@@ -516,9 +460,7 @@ class TestForeman(object):
         get_session_mock.return_value.__aenter__.return_value = get_resp
 
         foreman = Foreman("https://example.com", "username", "password")
-        response_ok = await foreman.remove_extraneous_interfaces(
-            host="host.example.com"
-        )
+        response_ok = await foreman.remove_extraneous_interfaces(host="host.example.com")
         assert not response_ok
         log_contents = caplog.text
         assert "There was something wrong with your request." in log_contents
@@ -547,12 +489,8 @@ class TestForeman(object):
         delete_resp.json.return_value = {}
         delete_session_mock.return_value.__aenter__.return_value = delete_resp
 
-        foreman = Foreman(
-            "https://example.com", "username", "password", asyncio.Semaphore(5)
-        )
-        response_ok = await foreman.remove_extraneous_interfaces(
-            host="host.example.com"
-        )
+        foreman = Foreman("https://example.com", "username", "password", asyncio.Semaphore(5))
+        response_ok = await foreman.remove_extraneous_interfaces(host="host.example.com")
         assert response_ok
 
     @patch("quads.tools.external.foreman.aiohttp.ClientSession.get")
@@ -578,12 +516,8 @@ class TestForeman(object):
         delete_resp.status = 400
         delete_session_mock.return_value.__aenter__.return_value = delete_resp
 
-        foreman = Foreman(
-            "https://example.com", "username", "password", asyncio.Semaphore(5)
-        )
-        response_ok = await foreman.remove_extraneous_interfaces(
-            host="host.example.com"
-        )
+        foreman = Foreman("https://example.com", "username", "password", asyncio.Semaphore(5))
+        response_ok = await foreman.remove_extraneous_interfaces(host="host.example.com")
         assert not response_ok
 
     @patch("quads.tools.external.foreman.aiohttp.ClientSession.get")
@@ -591,9 +525,7 @@ class TestForeman(object):
     @pytest.mark.asyncio
     async def test_add_role(self, put_session, get_session):
         get_resp = AsyncMock()
-        get_resp.json.return_value = {
-            "results": [{"login": "unittest", "id": "mock1", "name": "unittest-role1"}]
-        }
+        get_resp.json.return_value = {"results": [{"login": "unittest", "id": "mock1", "name": "unittest-role1"}]}
         get_session.return_value.__aenter__.return_value = get_resp
 
         put_resp = AsyncMock()
@@ -601,12 +533,8 @@ class TestForeman(object):
         put_resp.json.return_value = {}
         put_session.return_value.__aenter__.return_value = put_resp
 
-        foreman = Foreman(
-            "https://example.com", "username", "password", asyncio.Semaphore(5)
-        )
-        response_ok = await foreman.add_role(
-            user_name="unittest", role="unittest-role1"
-        )
+        foreman = Foreman("https://example.com", "username", "password", asyncio.Semaphore(5))
+        response_ok = await foreman.add_role(user_name="unittest", role="unittest-role1")
         print(response_ok)
         assert response_ok
 
@@ -615,9 +543,7 @@ class TestForeman(object):
     @pytest.mark.asyncio
     async def test_remove_role(self, put_session, get_session):
         get_resp = AsyncMock()
-        get_resp.json.return_value = {
-            "results": [{"login": "unittest", "id": "mock1", "name": "unittest-role1"}]
-        }
+        get_resp.json.return_value = {"results": [{"login": "unittest", "id": "mock1", "name": "unittest-role1"}]}
         get_session.return_value.__aenter__.return_value = get_resp
 
         put_resp = AsyncMock()
@@ -625,35 +551,8 @@ class TestForeman(object):
         put_resp.json.return_value = {}
         put_session.return_value.__aenter__.return_value = put_resp
 
-        foreman = Foreman(
-            "https://example.com", "username", "password", asyncio.Semaphore(5)
-        )
-        response_ok = await foreman.remove_role(
-            user_name="unittest", role="unittest-role1"
-        )
-        assert response_ok
-
-    @patch("quads.tools.external.foreman.aiohttp.ClientSession.get")
-    @patch("quads.tools.external.foreman.aiohttp.ClientSession.put")
-    @pytest.mark.asyncio
-    async def test_remove_role(self, put_session, get_session):
-        get_resp = AsyncMock()
-        get_resp.json.return_value = {
-            "results": [{"login": "unittest", "id": "mock1", "name": "unittest-role1"}]
-        }
-        get_session.return_value.__aenter__.return_value = get_resp
-
-        put_resp = AsyncMock()
-        put_resp.status = 200
-        put_resp.json.return_value = {}
-        put_session.return_value.__aenter__.return_value = put_resp
-
-        foreman = Foreman(
-            "https://example.com", "username", "password", asyncio.Semaphore(5)
-        )
-        response_ok = await foreman.remove_role(
-            user_name="unittest", role="unittest-role1"
-        )
+        foreman = Foreman("https://example.com", "username", "password", asyncio.Semaphore(5))
+        response_ok = await foreman.remove_role(user_name="unittest", role="unittest-role1")
         assert response_ok
 
     @patch("quads.tools.external.foreman.aiohttp.ClientSession.get")
@@ -661,9 +560,7 @@ class TestForeman(object):
     @pytest.mark.asyncio
     async def test_remove_role_not_exists(self, put_session, get_session):
         get_resp = AsyncMock()
-        get_resp.json.return_value = {
-            "results": [{"login": "unittest", "id": "mock1", "name": "unittest-role2"}]
-        }
+        get_resp.json.return_value = {"results": [{"login": "unittest", "id": "mock1", "name": "unittest-role2"}]}
         get_session.return_value.__aenter__.return_value = get_resp
 
         put_resp = AsyncMock()
@@ -671,25 +568,17 @@ class TestForeman(object):
         put_resp.json.return_value = {}
         put_session.return_value.__aenter__.return_value = put_resp
 
-        foreman = Foreman(
-            "https://example.com", "username", "password", asyncio.Semaphore(5)
-        )
-        response_ok = await foreman.remove_role(
-            user_name="unittest", role="unittest-role1"
-        )
+        foreman = Foreman("https://example.com", "username", "password", asyncio.Semaphore(5))
+        response_ok = await foreman.remove_role(user_name="unittest", role="unittest-role1")
         assert response_ok
 
     @patch("quads.tools.external.foreman.aiohttp.ClientSession.get")
     @pytest.mark.asyncio
     async def test_get_user_roles(self, get_session):
         get_resp = AsyncMock()
-        get_resp.json.return_value = {
-            "results": [{"login": "unittest", "id": "mock1", "name": "unittest-role1"}]
-        }
+        get_resp.json.return_value = {"results": [{"login": "unittest", "id": "mock1", "name": "unittest-role1"}]}
         get_session.return_value.__aenter__.return_value = get_resp
-        foreman = Foreman(
-            "https://example.com", "username", "password", asyncio.Semaphore(5)
-        )
+        foreman = Foreman("https://example.com", "username", "password", asyncio.Semaphore(5))
         response = await foreman.get_user_roles(user_id="mock1")
         assert response == {
             "unittest-role1": {
@@ -710,9 +599,7 @@ class TestForeman(object):
             ]
         }
         get_session.return_value.__aenter__.return_value = get_resp
-        foreman = Foreman(
-            "https://example.com", "username", "password", asyncio.Semaphore(5)
-        )
+        foreman = Foreman("https://example.com", "username", "password", asyncio.Semaphore(5))
         response = await foreman.get_user_roles(user_id="mock1")
         assert response == {
             "unittest-role1": {
@@ -749,9 +636,7 @@ class TestForeman(object):
     @pytest.mark.asyncio
     async def test_put_parameter(self, get_session, put_session):
         get_resp = AsyncMock()
-        get_resp.json.return_value = {
-            "results": [{"name": "host.example.com", "id": "host1"}]
-        }
+        get_resp.json.return_value = {"results": [{"name": "host.example.com", "id": "host1"}]}
         get_session.return_value.__aenter__.return_value = get_resp
 
         put_resp = AsyncMock()
@@ -764,9 +649,7 @@ class TestForeman(object):
             asyncio.Semaphore(5),
             asyncio.get_event_loop(),
         )
-        response = await foreman.put_parameter(
-            host_name="host.example.com", name="host.example.com", value="host1"
-        )
+        response = await foreman.put_parameter(host_name="host.example.com", name="host.example.com", value="host1")
         assert response
 
     @patch("quads.tools.external.foreman.aiohttp.ClientSession.put")
@@ -774,9 +657,7 @@ class TestForeman(object):
     @pytest.mark.asyncio
     async def test_put_parameters(self, get_session, put_session):
         get_resp = AsyncMock()
-        get_resp.json.return_value = {
-            "results": [{"name": "host.example.com", "id": "host1"}]
-        }
+        get_resp.json.return_value = {"results": [{"name": "host.example.com", "id": "host1"}]}
         get_session.return_value.__aenter__.return_value = get_resp
 
         put_resp = AsyncMock()
@@ -789,9 +670,7 @@ class TestForeman(object):
             asyncio.Semaphore(5),
             asyncio.get_event_loop(),
         )
-        response = await foreman.put_parameters(
-            host_name="host.example.com", params=[{"id": "host1"}]
-        )
+        response = await foreman.put_parameters(host_name="host.example.com", params=[{"id": "host1"}])
         assert response
 
     @patch("quads.tools.external.foreman.aiohttp.ClientSession.put")
@@ -799,9 +678,7 @@ class TestForeman(object):
     @pytest.mark.asyncio
     async def test_put_parameters_by_name(self, get_session, put_session):
         get_resp = AsyncMock()
-        get_resp.json.return_value = {
-            "results": [{"name": "host.example.com", "id": "host1"}]
-        }
+        get_resp.json.return_value = {"results": [{"name": "host.example.com", "id": "host1"}]}
         get_session.return_value.__aenter__.return_value = get_resp
 
         put_resp = AsyncMock()
@@ -849,11 +726,7 @@ class TestForeman(object):
     @pytest.mark.asyncio
     async def test_put_parameter_by_name(self, get_session, put_session):
         get_resp = AsyncMock()
-        get_resp.json.return_value = {
-            "results": [
-                {"name": "host.example.com", "id": "host1", "identifier": "name"}
-            ]
-        }
+        get_resp.json.return_value = {"results": [{"name": "host.example.com", "id": "host1", "identifier": "name"}]}
         get_session.return_value.__aenter__.return_value = get_resp
 
         put_resp = AsyncMock()
@@ -866,12 +739,8 @@ class TestForeman(object):
             asyncio.Semaphore(5),
             asyncio.get_event_loop(),
         )
-        response1 = await foreman.put_parameter_by_name(
-            host="hosts", name="media", value="host.example.com"
-        )
-        response2 = await foreman.put_parameter_by_name(
-            host="hosts", name="host", value="host1.example.com"
-        )
+        response1 = await foreman.put_parameter_by_name(host="hosts", name="media", value="host.example.com")
+        response2 = await foreman.put_parameter_by_name(host="hosts", name="host", value="host1.example.com")
         assert response1 and not response2
 
     @patch("quads.tools.external.foreman.aiohttp.ClientSession.put")
@@ -892,12 +761,8 @@ class TestForeman(object):
             asyncio.Semaphore(5),
             asyncio.get_event_loop(),
         )
-        response1 = await foreman.put_parameter_by_name(
-            host="hosts", name="media", value="host.example.com"
-        )
-        response2 = await foreman.put_parameter_by_name(
-            host="hosts", name="host", value="host.example.com"
-        )
+        response1 = await foreman.put_parameter_by_name(host="hosts", name="media", value="host.example.com")
+        response2 = await foreman.put_parameter_by_name(host="hosts", name="host", value="host.example.com")
         assert not response1 and not response2
 
     @patch("quads.tools.external.foreman.aiohttp.ClientSession.put")
@@ -945,11 +810,7 @@ class TestForeman(object):
     @pytest.mark.asyncio
     async def test_get_idrac_host_without_mgmt(self, get_session):
         get_resp = AsyncMock()
-        get_resp.json.return_value = {
-            "results": [
-                {"name": "host.example.com", "id": "host1", "identifier": "name"}
-            ]
-        }
+        get_resp.json.return_value = {"results": [{"name": "host.example.com", "id": "host1", "identifier": "name"}]}
         get_session.return_value.__aenter__.return_value = get_resp
 
         foreman = Foreman("https://example.com", "username", "password")
@@ -960,11 +821,7 @@ class TestForeman(object):
     @pytest.mark.asyncio
     async def test_get_idrac_host_with_mgmt(self, get_session):
         get_resp = AsyncMock()
-        get_resp.json.return_value = {
-            "results": [
-                {"name": "mgmt.example.com", "id": "host1", "identifier": "name"}
-            ]
-        }
+        get_resp.json.return_value = {"results": [{"name": "mgmt.example.com", "id": "host1", "identifier": "name"}]}
         get_session.return_value.__aenter__.return_value = get_resp
 
         foreman = Foreman("https://example.com", "username", "password")
@@ -975,17 +832,11 @@ class TestForeman(object):
     @pytest.mark.asyncio
     async def test_get_idrac_host_with_details_with_mgmt(self, get_session):
         get_resp = AsyncMock()
-        get_resp.json.return_value = {
-            "results": [
-                {"name": "mgmt.example.com", "id": "host1", "identifier": "name"}
-            ]
-        }
+        get_resp.json.return_value = {"results": [{"name": "mgmt.example.com", "id": "host1", "identifier": "name"}]}
         get_session.return_value.__aenter__.return_value = get_resp
 
         foreman = Foreman("https://example.com", "username", "password")
-        response1 = await foreman.get_idrac_host_with_details(
-            host_name="mgmt.example.com"
-        )
+        response1 = await foreman.get_idrac_host_with_details(host_name="mgmt.example.com")
         assert response1 == {
             "name": "mgmt.example.com",
             "id": "host1",
@@ -996,15 +847,9 @@ class TestForeman(object):
     @pytest.mark.asyncio
     async def test_get_idrac_host_with_details_without_mgmt(self, get_session):
         get_resp = AsyncMock()
-        get_resp.json.return_value = {
-            "results": [
-                {"name": "host.example.com", "id": "host1", "identifier": "name"}
-            ]
-        }
+        get_resp.json.return_value = {"results": [{"name": "host.example.com", "id": "host1", "identifier": "name"}]}
         get_session.return_value.__aenter__.return_value = get_resp
 
         foreman = Foreman("https://example.com", "username", "password")
-        response1 = await foreman.get_idrac_host_with_details(
-            host_name="host.example.com"
-        )
+        response1 = await foreman.get_idrac_host_with_details(host_name="host.example.com")
         assert not response1

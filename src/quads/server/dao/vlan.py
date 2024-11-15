@@ -6,9 +6,7 @@ from quads.server.models import db, Vlan
 
 class VlanDao(BaseDao):
     @classmethod
-    def create_vlan(
-        cls, gateway: str, ip_free: int, ip_range: str, netmask: str, vlan_id: int
-    ) -> Vlan:
+    def create_vlan(cls, gateway: str, ip_free: int, ip_range: str, netmask: str, vlan_id: int) -> Vlan:
         _vlan = Vlan(
             gateway=gateway,
             ip_free=ip_free,

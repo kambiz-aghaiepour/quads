@@ -40,15 +40,11 @@ class QuadsApi:
         self.session = requests.Session()
         retries = Retry(total=5, backoff_factor=1, status_forcelist=[502, 503, 504])
         self.session.mount("http://", HTTPAdapter(max_retries=retries))
-        self.auth = HTTPBasicAuth(
-            self.config.get("quads_api_username"), self.config.get("quads_api_password")
-        )
+        self.auth = HTTPBasicAuth(self.config.get("quads_api_username"), self.config.get("quads_api_password"))
 
     # Base functions
     def get(self, endpoint: str) -> Response:
-        _response = self.session.get(
-            os.path.join(self.base_url, endpoint), verify=False, auth=self.auth
-        )
+        _response = self.session.get(os.path.join(self.base_url, endpoint), verify=False, auth=self.auth)
         if _response.status_code == 500:
             raise APIServerException("Check the flask server logs")
         if _response.status_code == 400:
@@ -88,9 +84,7 @@ class QuadsApi:
         return _response
 
     def delete(self, endpoint) -> Response:
-        _response = self.session.delete(
-            os.path.join(self.base_url, endpoint), verify=False, auth=self.auth
-        )
+        _response = self.session.delete(os.path.join(self.base_url, endpoint), verify=False, auth=self.auth)
         if _response.status_code == 500:
             raise APIServerException("Check the flask server logs")
         if _response.status_code == 400:

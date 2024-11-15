@@ -17,9 +17,7 @@ from quads.server.models import db, Host, Cloud
 
 class HostDao(BaseDao):
     @classmethod
-    def create_host(
-        cls, name: str, model: str, host_type: str, default_cloud: str
-    ) -> Host:
+    def create_host(cls, name: str, model: str, host_type: str, default_cloud: str) -> Host:
         _host_obj = cls.get_host(name)
         if _host_obj:
             raise EntryExisting
@@ -95,11 +93,7 @@ class HostDao(BaseDao):
 
     @staticmethod
     def get_host_models():
-        host_models = (
-            db.session.query(Host.model, func.count(Host.model))
-            .group_by(Host.model)
-            .all()
-        )
+        host_models = db.session.query(Host.model, func.count(Host.model)).group_by(Host.model).all()
         return host_models
 
     @staticmethod
@@ -131,7 +125,7 @@ class HostDao(BaseDao):
             if not field:
                 raise InvalidArgument(f"{k} is not a valid field.")
             try:
-                if type(field.columns[0].type) == Boolean:
+                if type(field.columns[0].type) is Boolean:
                     value = value.lower() in ["true", "y", 1, "yes"]
             except AttributeError:
                 if first_field in ["cloud", "default_cloud"]:
@@ -151,9 +145,7 @@ class HostDao(BaseDao):
                         value,
                     )
                 )
-        _hosts = HostDao.create_query_select(
-            Host, filters=filter_tuples, group_by=group_by, order_by=Host.name.asc()
-        )
+        _hosts = HostDao.create_query_select(Host, filters=filter_tuples, group_by=group_by, order_by=Host.name.asc())
         return _hosts
 
     @staticmethod

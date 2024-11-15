@@ -41,6 +41,17 @@ The QUADS project welcomes contributions from everyone!  Please read the below s
     cp -r conf/* /opt/quads/conf/
     ```
 
+### Pre-commit hooks
+
+  - Install pre-commit
+    ```bash
+    dnf -y install pre-commit
+    ```
+  - Install the pre-commit hooks
+    ```bash
+    pre-commit install
+    ```
+
 ### Running QUADS Locally
 #### Running the DB
   - Instantiate a PostgreSQL container via podman

@@ -140,8 +140,7 @@ class TestCreateMemory:
         assert response.status_code == 400
         assert response.json["error"] == "Bad Request"
         assert (
-            response.json["message"]
-            == f"Memory with this handle ({MEMORY_1_REQUEST[0]['handle']}) already "
+            response.json["message"] == f"Memory with this handle ({MEMORY_1_REQUEST[0]['handle']}) already "
             "exists for this host."
         )
 
@@ -210,7 +209,7 @@ class TestReadMemory:
         auth_header = auth.get_auth_header()
         response = unwrap_json(
             test_client.get(
-                f"/api/v3/memory",
+                "/api/v3/memory",
                 headers=auth_header,
             )
         )

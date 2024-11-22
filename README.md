@@ -121,7 +121,7 @@ QUADS automates the future scheduling, end-to-end provisioning and delivery of b
    - Open, RESTful JSON API and RBAC for controlling access
 
 ## Design
-   - Main components: `Python3, Flask, SqlAlchemy, PostrgreSQL, Jinja2`
+   - Main components: `Python3, Flask, SqlAlchemy, PostgreSQL, Jinja2`
    - Installation via RPM for Fedora Linux.
    - We use [Badfish](https://github.com/redhat-performance/badfish) for managing bare-metal IPMI
    - We use [Foreman](https://theforeman.org/) for the systems provisioning backend.
@@ -133,7 +133,7 @@ QUADS automates the future scheduling, end-to-end provisioning and delivery of b
    - Recent [Fedora Server](https://fedoraproject.org/server/download/) for RPM installations
    - 1 x modest sized VM for QUADS and the associated Wiki component
    - The scheduling functionality can be used standalone, but you'll want a provisioning backend like [Foreman](https://theforeman.org/) to take full advantage of QUADS scheduling, automation and provisioning capabilities.
-   - Switch/VLAN automation is done on Juniper Switches in [Q-in-Q VLANs](http://www.jnpr.net/techpubs/en_US/junos14.1/topics/concept/qinq-tunneling-qfx-series.html), but command sets can easily be extended to support other network switch models.
+   - Switch/VLAN automation is done on Juniper Switches in [Q-in-Q VLANs](http://www.jnpr.net/techpubs/en_US/junos14.1/topics/concept/qinq-tunneling-qfx-series.html), but command sets can be extended to support other network switch models as future RFE's.
    - We use [badfish](https://github.com/redhat-performance/badfish) for Dell systems to manage boot order to accomodate OpenStack deployments via Ironic/Triple-O as well as to control power actions via the Redfish API.
 
 ## Setup Overview
@@ -195,7 +195,7 @@ flask --app quads.server.app init-db
 
 This step is optional but may be welcoming due to recent HSTS enforcement in most browsers.
 
-To enable TLS/SSL on QUADS (API, Web) you'll need to generate your own certificates, if you're cool with self-signed cerificates you can use this one-liner:
+To enable TLS/SSL on QUADS (API, Web) you'll need to generate your own certificates, **if you're cool with self-signed cerificates** you can use this one-liner below, otherwise you should adapt this to signed TLS/SSL certificates from your IT department.
 
 ```
 servername=$(hostname)

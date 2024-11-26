@@ -50,9 +50,6 @@ class Link(NavigationItem):
 
 
 class View(NavigationItem):
-    """
-    This
-    """
 
     ignore_query = True
 

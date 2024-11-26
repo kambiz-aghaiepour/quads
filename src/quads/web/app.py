@@ -7,7 +7,7 @@ from quads.web.blueprints.visual import visual_bp
 from quads.web.blueprints.wiki import wiki_bp
 from quads.web.controller.dynamic_nav.dynamic_menus import DynamicMenus
 from quads.web.controller.dynamic_nav.dynamic_nav import DynamicNav
-from quads.web.controller.dynamic_nav.markup_elements import View, Navbar
+from quads.web.controller.dynamic_nav.markup_elements import Subgroup, View, Navbar
 
 WEB_CONTENT_PATH = Config.get("web_content_path")
 EXCLUDE_DIRS = Config.get("web_exclude_dirs")
@@ -27,6 +27,12 @@ def initiate_navbar(flask_app):
             View(text="Assignments", endpoint="wiki.index"),
             View(text="Vlans", endpoint="wiki.create_vlans"),
             View(text="Available", endpoint="wiki.available"),
+            Subgroup(
+                "Visuals",
+                View(text="Current Month", endpoint="visual.visuals", **{"when": "current"}),
+                View(text="Next Month", endpoint="visual.visuals", **{"when": "next"}),
+                View(text="All Time", endpoint="visual.index"),
+            ),
             *dynamic_menus.get_dynamic_navbar_menus(),
         ),
     )

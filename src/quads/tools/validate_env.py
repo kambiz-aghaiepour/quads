@@ -359,7 +359,7 @@ def main(_args, _loop, _logger=None):  # pragma: no cover
     if _logger:
         logger = _logger
 
-    _filter = {"validated": False, "provisioned": True, "cloud__ne": "cloud01"}
+    _filter = {"active": True, "validated": False, "provisioned": True, "cloud__ne": "cloud01"}
     assignments = quads.filter_assignments(_filter)
 
     if type(_args) is dict:

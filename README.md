@@ -602,10 +602,7 @@ Additionally, you can pass `--year` instead for a report for every month in that
 
 ## Customizing Environment Web Details
 ### Changing the Default Lab Name
-Until [this RFE](https://github.com/redhat-performance/quads/issues/537) is completed you'll need to change your lab name, or what you want to call your QUADS-managed environment in two separate `quads-web` files:
-
-* Edit the [inventory.html](https://github.com/redhat-performance/quads/blob/latest/src/quads/web/templates/wiki/inventory.html#L5)
-* Edit the [navbar.html](https://github.com/redhat-performance/quads/blob/latest/src/quads/web/templates/navbar.html#L2)
+You can change the default QUADS environment name by modifying the `lab_name` variable in the [quads.yml](https://github.com/redhat-performance/quads/blob/latest/conf/quads.yml#L11)
 
 Restart `quads-web` to take effect.
 

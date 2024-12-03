@@ -7,7 +7,8 @@
 spare_pool_name: cloud01
 spare_pool_description: "Spare Pool"
 spare_pool_owner: quads
-
+# Define the name of the QUADS environment
+lab_name: "Lab"
 # display name for QUADS email notifications
 mail_display_name: "QUADS Scheduler"
 # set header for User-Agent:
@@ -35,7 +36,7 @@ email_host: 172.16.0.1
 
 # * Note* you'll need Supybot with the notify plugin
 # these setting use netcat to send messages to Supybot
-irc_notify: true
+irc_notify: false
 ircbot_ipaddr: 192.168.0.100
 ircbot_port: 5050
 ircbot_channel: #yourchannel

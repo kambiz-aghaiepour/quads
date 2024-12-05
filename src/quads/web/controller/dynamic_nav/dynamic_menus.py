@@ -22,7 +22,6 @@ class DynamicMenus:
                 numbered_links.append(link)
             except ValueError:
                 unnumbered_links.append(link)
-
         sorted_numbered_links = sorted(numbered_links, key=lambda x: x if sort_dir else x[sort_keyword])
         sorted_unnumbered_links = sorted(unnumbered_links, key=lambda x: x if sort_dir else x[sort_keyword])
 
@@ -64,7 +63,7 @@ class DynamicMenus:
                 if parent_dir:
                     url_args.update({"directory": parent_dir, "endpoint": "content.dynamic_content_sub"})
                 link = url_args
-                link["text"] = file.replace(".html", "").replace("_", " ")
+                link["text"] = file.replace(".html", "")
                 links.append(link)
             else:
                 with open(os.path.join(file_path, file)) as f:

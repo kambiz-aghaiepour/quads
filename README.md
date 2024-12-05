@@ -97,7 +97,7 @@ QUADS automates the future scheduling, end-to-end provisioning and delivery of b
          * [Skipping Past Network and Systems Validation per Host](#skipping-past-network-and-systems-validation-per-host)
          * [Validate Only a Specific Cloud](#validate-only-a-specific-cloud)
          * [Mapping Internal VLAN Interfaces to Problem Hosts](#mapping-internal-vlan-interfaces-to-problem-hosts)
-         * [Validating after Removing Hosts](#validating-after-removing-hosts)
+         * [Dealing with the Postgres Database](#dealing-with-the-postgres-database)
       * [Contact QUADS Developers](#contact-quads-developers)
       * [QUADS Talks and Media](#quads-talks-and-media)
 
@@ -1421,9 +1421,10 @@ The _first two octets_ here can be substituted by the _first two octets of your 
 
 This mapping feeds into our [VLAN network validation code](https://github.com/redhat-performance/quads/blob/latest/src/quads/tools/validate_env.py#L276)
 
-### Validating after Removing Hosts
-* There is currently a corner-case [bug](https://github.com/redhat-performance/quads/issues/361) where removing host(s) prior to the assignment being released may make `quads --validate-env` do nothing.
-* You'll need to workaround this in the Postgres database:
+### Dealing with the Postgres Database
+* Everything QUADS does is done inside the PostgreSQL database, occasionally you may want to adjust settings here.
+* Below is a working example of manually setting the `validated` flag at the cloud level to force `--validate-env` to process it.
+* Doing this is rare if at all needed but keeping this here for reference and posterity.
 
   - Connect to postgres
 ```

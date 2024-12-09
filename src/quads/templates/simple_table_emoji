@@ -56,11 +56,10 @@
         style="font-size:20px;text-align:center;"
         title=
         "Description: {{ day["display_description"] }}
-        Env: cloud{{ day["chosen_color"] }}
-        Owner: {{ day["display_owner"] }}
-        Ticket: {{ day["display_ticket"] }}
-        Emoji: {{ day["emoji"][2:] }}
-        Day: {{ day["day"] }}">
+Env: cloud{{ day["chosen_color"] }}
+Owner: {{ day["display_owner"] }}
+Ticket: {{ day["display_ticket"] }}
+Day: {{ day["day"] }}">
         {% if day["chosen_color"]|int != 1 :  %}
             {{ day["emoji"] }}
         {% endif %}

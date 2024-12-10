@@ -24,7 +24,7 @@ async def main():
 
     for _date in dates:
         gen_time = "Allocation Map for %s-%.2d" % (_date.year, _date.month)
-        content = await generate.generator(None, calendar.mdays[_date.month], _date.month, _date.year, gen_time)
+        content = await generate.generator(calendar.mdays[_date.month], _date.month, _date.year, gen_time)
         file_path = os.path.join(Config["visual_web_dir"], "%s-%.2d.html" % (_date.year, _date.month))
         with open(file_path, "wb+") as _file:
             _file.write(content.encode("utf-8"))

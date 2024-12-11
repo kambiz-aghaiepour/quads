@@ -14,7 +14,7 @@
 
 %define name quads-dev
 %define reponame quads
-%define branch latest
+%define branch development
 %define version 2.1.6
 %define build_timestamp %{lua: print(os.date("%Y%m%d"))}
 
@@ -145,6 +145,7 @@ rm -rf %{buildroot}
 %config(noreplace) /opt/quads/conf/idrac_interfaces.yml
 %config(noreplace) /etc/logrotate.d/logrotate_quads.conf
 %config(noreplace) /etc/postfix/postfix-files.d/quads.cf
+%config(noreplace) /opt/quads/conf/selfservice.yml
 
 %{python3_sitelib}/quads/
 %{python3_sitelib}/quads-*.egg-info/

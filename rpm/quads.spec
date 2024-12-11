@@ -41,6 +41,7 @@ Requires: python3-passlib >= 1.7
 Requires: python3-PyYAML >= 6.0
 Requires: python3-requests >= 2.28.1
 Requires: python3-aiohttp >= 3.8.5
+Requires: python3-distlib >= 0.2
 Requires: git >= 2.1
 Requires: cronie >= 1.0
 Requires: policycoreutils-python-utils >= 3.5

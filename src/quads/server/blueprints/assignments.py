@@ -1,7 +1,7 @@
 import re
 from datetime import datetime
 
-from flask import Blueprint, Response, jsonify, make_response, request
+from flask import Blueprint, Response, jsonify, make_response, request, g
 from sqlalchemy import inspect
 
 from quads.config import Config
@@ -406,13 +406,12 @@ def terminate_assignment(assignment_id) -> Response:
         }
         return make_response(jsonify(response), 400)
 
-    auth_value = request.headers["Authorization"].split(" ")
-    user = auth_value[1].split("@")[0]
-    if user != _assignment.owner:
+    username = g.current_user.split("@")[0]
+    if username != _assignment.owner:
         response = {
             "status_code": 403,
             "error": "Forbidden",
-            "message": "You don't have permission to terminate this assignment",
+            "message": f"You({username}) don't have permission to terminate this assignment({_assignment.owner})",
         }
         return make_response(jsonify(response), 403)
 

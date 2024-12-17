@@ -1,7 +1,7 @@
 import json
 from functools import wraps
 
-from flask import Response, request
+from flask import Response, request, g
 
 from quads.server.models import Role, User, db
 
@@ -76,6 +76,7 @@ def check_access(roles):
                     "error": "Bad Request",
                 }
                 return Response(response=json.dumps(response), status=400)
+            g.current_user = username
             return f(*args, **kwargs)
 
         return decorated_function

@@ -427,6 +427,8 @@ def terminate_assignment(assignment_id) -> Response:
     for sched in _schedules:
         sched.end = datetime.now()
 
+    _assignment.active = False
+
     BaseDao.safe_commit()
 
     response = {

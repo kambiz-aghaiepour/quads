@@ -753,6 +753,30 @@ parser.add_argument(
     help="Modify notification of a cloud",
 )
 
+action_group.add_argument(
+    "--rack",
+    dest="action",
+    action="store_const",
+    const="rack",
+    help="rack name of the host",
+)
+
+action_group.add_argument(
+    "--blade",
+    dest="action",
+    action="store_const",
+    const="blade",
+    help="blade name of the host",
+)
+
+action_group.add_argument(
+    "--uloc",
+    dest="action",
+    action="store_const",
+    const="uloc",
+    help="U-location name of the host",
+)
+
 mod_notification_arg_names = [
     "fail", "success", "initial", "pre-initial",
     "pre", "one-day", "three-days", "five-days", "seven-days"]

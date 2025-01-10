@@ -13,6 +13,7 @@ For more details on the API, please refer to our [Swagger Documentation](https:/
     * [Query Hosts on a Specific Cloud](#query-hosts-on-a-specific-cloud)
     * [Query a Model Type by Cloud](#query-a-model-type-by-cloud)
     * [Query a Host Schedule](#query-a-host-schedule)
+    * [Query Available OS in Foreman](#query-available-os-in-foreman)
   * [More Examples with API POST](#more-examples-with-api-post)
     * [Define a Host via API POST](#define-a-host-via-api-post)
 
@@ -525,6 +526,35 @@ curl http://localhost/api/v3/schedules?host=host01.example.com | python3 -m json
       "id": 16,
       "start": "Sun, 02 Jun 2024 22:00:00 GMT"
     }
+]
+```
+
+### Query Available OS in Foreman
+
+```bash
+curl 'http://localhost/api/v3/hosts/os_list'
+```
+- Response
+```json
+[
+  {
+    "Family": "Redhat",
+    "Id": 2,
+    "Release Name": "",
+    "Title": "RHEL 7.3"
+  },
+  {
+    "Family": "Redhat",
+    "Id": 3,
+    "Release Name": "",
+    "Title": "RHEL 7.4"
+  },
+  {
+    "Family": "Redhat",
+    "Id": 4,
+    "Release Name": "",
+    "Title": "RHEL 7.5"
+  }
 ]
 ```
 

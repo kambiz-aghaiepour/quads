@@ -106,6 +106,8 @@ curl -X POST -u $USERNAME:$PASSWORD -H 'accept: application/json' 'http://localh
     - `/api/v3/schedules`           Retrieve a list of all schedules
     - `/api/v3/available`           List available hosts, usually used with `--schedule-start YYYY-MM-DD HH` and `--schedule-end YYYY-MM-DD HH`
     - `/api/v3/interfaces`          List interfaces of QUADS host(s)
+    - `/api/v3/vlans`               Retrieve a list of all vlans
+    - `/api/v3/vlans/free`          Retrieve a list of all available vlans
     - `/api/v3/clouds/summary`      Obtain a full summary of clouds, tickets, descriptions
     - `/api/v3/moves`               Obtain a list of hosts with their current and future clouds
 

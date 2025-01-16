@@ -244,6 +244,7 @@ def create_self_assignment() -> Response:
     qinq = data.get("qinq")
     wipe = data.get("wipe")
     cc_user = data.get("cc_user")
+    ostype = data.get("ostype")
 
     required_fields = [
         "description",
@@ -308,6 +309,7 @@ def create_self_assignment() -> Response:
         "ccuser": cc_user,
         "is_self_schedule": True,
         "cloud": _cloud.name,
+        "ostype": ostype,
     }
     if _vlan:
         kwargs["vlan_id"] = int(vlan)
@@ -456,7 +458,7 @@ def terminate_assignment(assignment_id) -> Response:
         }
         return make_response(jsonify(response), 400)
 
-    username = g.current_user.split("@")[0]
+    username = g.current_user.email.split("@")[0]
     if username != _assignment.owner:
         response = {
             "status_code": 403,

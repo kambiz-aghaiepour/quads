@@ -197,6 +197,8 @@ flask --app quads.server.app init-db
    - You should be able to access `quads-web` here now: http://QUADSVM and your [QUADS API](docs/quads-api.md) will also be available.
    - Make sure you open up TCP/80 and/or TCP/443 on your host firewall of choice, to enable SSL/TLS follow the next optional section.
 
+[![asciicast](https://asciinema.org/a/APyA4DzpqfW4ceOeWwenfueXd.svg)](https://asciinema.org/a/APyA4DzpqfW4ceOeWwenfueXd)
+
 #### Using SSL with Flask API and QUADS
 
 This step is optional but may be welcoming due to recent HSTS enforcement in most browsers.

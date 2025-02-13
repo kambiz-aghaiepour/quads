@@ -148,8 +148,8 @@ class TestJira(object):
             password=self.password,
             semaphore=self.semaphore,
         )
-        response = await jira.post_request(endpoint="/test", payload={"test": "mock_result"})
-        assert not response
+        result, response = await jira.post_request(endpoint="/test", payload={"test": "mock_result"})
+        assert not result
 
     @patch("quads.tools.external.jira.aiohttp.ClientSession.post")
     @pytest.mark.asyncio
@@ -164,8 +164,8 @@ class TestJira(object):
             password=self.password,
             semaphore=self.semaphore,
         )
-        response = await jira.post_request(endpoint="/test", payload={"test": "mock_result"})
-        assert not response
+        result, response = await jira.post_request(endpoint="/test", payload={"test": "mock_result"})
+        assert not result
 
     @patch("quads.tools.external.jira.aiohttp.ClientSession.put")
     @pytest.mark.asyncio

@@ -314,10 +314,8 @@ class TestGetHosts:
         )
         assert response.status_code == 200
         assert len(response.json) == 2
-        assert response.json[0][0] == "FC640"
-        assert response.json[0][1] == 1
-        assert response.json[1][0] == "R640"
-        assert response.json[1][1] == 1
+        assert response.json.get("FC640") == 1
+        assert response.json.get("R640") == 1
 
     @pytest.mark.parametrize("prefill", prefill_settings, indirect=True)
     def test_valid_group_by_bad(self, test_client, auth, prefill):

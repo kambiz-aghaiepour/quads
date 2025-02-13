@@ -30,13 +30,14 @@ def get_hosts() -> Response:
     else:
         _hosts = HostDao.get_hosts()
 
-    if _hosts and type(_hosts[0]) is Host:
-        return jsonify([_host.as_dict() for _host in _hosts])
-    else:
-        for _host in _hosts:
-            return jsonify([tuple(_host) for _host in _hosts])
+    _hosts_dict = {}
+    if _hosts:
+        if isinstance(_hosts[0], Host):
+            _hosts_dict = [_host.as_dict() for _host in _hosts]
+        else:
+            _hosts_dict = {key: value for key, value in _hosts}
 
-    return jsonify(_hosts)
+    return make_response(jsonify(_hosts_dict), 200)
 
 
 @host_bp.route("/<hostname>")

@@ -132,7 +132,7 @@ class Jira(object):
 
         data = {
             "fields": {
-                "project": {"key": f'"{self.ticket_queue}"'},
+                "project": {"key": self.ticket_queue},
                 "issuetype": {"name": "Task"},
                 "summary": title,
                 "description": description,

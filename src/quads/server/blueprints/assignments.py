@@ -349,6 +349,14 @@ def create_self_assignment() -> Response:
             }
             return make_response(jsonify(response), 400)
 
+        if not response:
+            response = {
+                "status_code": 400,
+                "error": "Bad Request",
+                "message": "Jira ticket creation failed",
+            }
+            return make_response(jsonify(response), 400)
+
         ticket = response.get("key").split("-")[1]
         kwargs["ticket"] = ticket
     else:

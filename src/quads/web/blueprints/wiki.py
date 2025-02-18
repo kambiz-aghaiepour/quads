@@ -85,11 +85,12 @@ async def broken():
 
 @wiki_bp.route("/available", methods=["GET", "POST"])
 async def available():
+    show_gpu = Config.get("show_gpu")
     search = ModelSearchForm(request.form)
     if request.method == "POST":
         return await search_results(search)
 
-    return render_template("wiki/available.html", form=search, available_hosts=[])
+    return render_template("wiki/available.html", form=search, available_hosts=[], show_gpu=show_gpu)
 
 
 @wiki_bp.route("/results")

@@ -98,6 +98,9 @@ quads --export-host-details /tmp/my_host_data.yml
 | Component              | Field Type | Description                  | Operators       |
 |------------------------|------------|------------------------------|-----------------|
 | model                  |  string    | defined system model         | ==,!=           |
+| rack                   |  string    | rack name                    | ==,!=           |
+| uloc                   |  string    | U location                   | ==,!=           |
+| blade                  |  string    | blade id                     | ==,!=           |
 | disks.size_gb          |  integer   | disk size in GB              | ==,!=,<,<=,>,>= |
 | disks.disks_type       |  string    | nvme,sata,ssd                | ==,!=           |
 | disks.count            |  integer   | number of disks              | ==,!=,<,<=,>,>= |

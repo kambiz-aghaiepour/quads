@@ -366,16 +366,17 @@ You will need to do this when you introduce new system models into your fleet if
      - Note the ```--host-type``` parameter, this is a mandatory, free-form label that can be anything.  It will be used later for ```post-config``` automation and categorization.
      - If you don't want systems to be reprovisioned when they move into a cloud environment append `--no-wipe` to the define command.
      - We are excluding anything starting with mgmt- and including servers with the name r630.
+     - You can now optionally include rack, uloc and blade information too.
      - Note that you **must define the model(s) of systems before you define them** in the previous step.
 
 ```bash
-for h in $(hammer host list --per-page 1000 | egrep -v "mgmt|c08-h30"| grep r630 | awk '{ print $3 }') ; do quads --define-host $h --default-cloud cloud01 --host-type general --model R630; done
+for h in $(hammer host list --per-page 1000 | egrep -v "mgmt|c08-h30"| grep r630 | awk '{ print $3 }') ; do quads --define-host $h --default-cloud cloud01 --host-type general --model R630 --rack f01 --uloc h01 --blade b01; done
 ```
 
    - The command **without Foreman** would be simply:
 
 ```bash
-quads --define-host --host <hostname> --default-cloud cloud01 --host-type general --model R630
+quads --define-host --host <hostname> --default-cloud cloud01 --host-type general --model R630 --rack f01 --uloc h01 --blade b01
 ```
 
 #### Define Host Interfaces in QUADS

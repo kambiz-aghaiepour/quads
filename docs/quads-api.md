@@ -573,6 +573,9 @@ curl -X 'POST' \
   "default_cloud": "cloud01",
   "host_type": "vendor",
   "model": "r640",
+  "rack": "f01",
+  "uloc": "h01",
+  "blade": "b01",
   "name": "host.example.com"
 }'
 ```
@@ -599,6 +602,9 @@ curl -X 'POST' \
   "id": 18,
   "last_build": null,
   "model": "R640",
+  "rack": "f01",
+  "uloc": "h01",
+  "blade": "b01",
   "name": "host.example.com",
   "retired": false,
   "switch_config_applied": false,

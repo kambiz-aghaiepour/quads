@@ -56,6 +56,9 @@
                             <th scope="col">Hostname</th>
                             <th scope="col">Cloud</th>
                             <th scope="col">Model</th>
+                            {% if show_gpu %}
+                            <th scope="col">GPU</th>
+                            {% endif %}
                             <th scope="col">Disks</th>
                         </tr>
                     </thead>
@@ -70,6 +73,14 @@
                             <td>{{ host["name"] }}</td>
                             <td>{{ host["cloud"] }}</td>
                             <td>{{ host["model"] }}</td>
+                            {% if show_gpu %}
+                                {% if host.processors and host.processors|selectattr("processor_type", "equalto", "GPU")|list %}
+                                    <td data-bs-toggle="modal"
+                                        data-bs-target="#baseModal" onclick="updateProcessors({{ host.processors }})">&#129504;</td>
+                                {% else %}
+                                    <td>&#10060;</td>
+                                {% endif %}
+                            {% endif %}
                             {% if host.disks %}
                                 <td data-bs-toggle="modal"
                                     data-bs-target="#baseModal" onclick="updateDisks({{ host.disks }})">&#128190;</td>
@@ -93,15 +104,32 @@
     <script>
         const updateDisks = (disks) => {
             document.getElementsByClassName('modal-title')[0].innerHTML = 'Disks'
+            let th_data = "<tr><th>Type</th><th>Size</th><th>Count</th></tr>"
             let td_data = ""
             disks.forEach(disk => {
-                td_data += `<tr><td>${disk["disk_type"]}</td>`
+                td_data += `<tr>`
+                td_data += `<td>${disk["disk_type"]}</td>`
                 td_data += `<td>${disk["disk_size"]}</td>`
-                td_data += `<td>${disk["disk_count"]}</td></tr>`
+                td_data += `<td>${disk["disk_count"]}</td>`
+                td_data += `</tr>`
             })
-            let th_data = "<tr><th>DiskType</th><th>DiskSize</th><th>DiskCount</th></tr>"
             document.getElementsByClassName('modal-body')[0].innerHTML = `<table class="table">${th_data}${td_data}</table>`;
             };
+        const updateProcessors = (processors) => {
+            document.getElementsByClassName('modal-title')[0].innerHTML = 'GPUs';
+            let th_data = "<tr><th>Type</th><th>Vendor</th><th>Product</th></tr>";
+            let td_data = "";
+            processors.forEach(processor => {
+                if (processor["processor_type"] === "GPU") {
+                    td_data += `<tr>`
+                    td_data += `<td>${processor["processor_type"]}</td>`
+                    td_data += `<td>${processor["vendor"]}</td>`
+                    td_data += `<td>${processor["product"]}</td>`
+                    td_data += `</tr>`
+                }
+            });
+            document.getElementsByClassName('modal-body')[0].innerHTML = `<table class="table">${th_data}${td_data}</table>`;
+        };
         $(document).ready( function () {
             const table = $('#results').DataTable({
                 dom: 'Blfrtip',

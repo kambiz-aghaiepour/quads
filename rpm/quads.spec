@@ -123,9 +123,9 @@ cp -rf cron/quads %{buildroot}/opt/quads/conf/quads.cron.example
 cp -rf container/etc/nginx/conf.d/apiv3.conf %{buildroot}/etc/nginx/conf.d/
 cp -rf container/etc/nginx/conf.d/apiv3_ssl.conf.example %{buildroot}/etc/nginx/conf.d/
 cp -rf container/etc/postfix/postfix-files.d/quads.cf %{buildroot}/etc/postfix/postfix-files.d/
+cp -rf migrations/* %{buildroot}%{prefix}/migrations/
 echo 'export SQLALCHEMY_DATABASE_URI="postgresql://postgres:postgres@localhost:5432/quads"' > %{buildroot}/etc/profile.d/quads.sh
 echo 'eval "$(register-python-argcomplete quads)"' >> %{buildroot}/etc/profile.d/quads.sh
-cp -rf migrations/* %{buildroot}%{prefix}/migrations/
 %py3_install
 
 %clean
@@ -141,6 +141,7 @@ rm -rf %{buildroot}
 /etc/nginx/*
 /opt/quads/conf/logrotate_quads.conf
 /opt/quads/conf/quads.cron.example
+/opt/quads/migrations/*
 /usr/bin/quads
 %config(noreplace) /opt/quads/conf/quads.yml
 %config(noreplace) /opt/quads/conf/quadsweb.yml

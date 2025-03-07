@@ -95,8 +95,9 @@ async def available():
 
 @wiki_bp.route("/results")
 async def search_results(search):
+    show_gpu = Config.get("show_gpu")
     available_hosts_list = await available_hosts(search)
-    return render_template("wiki/available.html", form=search, available_hosts=available_hosts_list)
+    return render_template("wiki/available.html", form=search, available_hosts=available_hosts_list, show_gpu=show_gpu)
 
 
 @wiki_bp.route("/available_hosts")
@@ -131,6 +132,14 @@ async def available_hosts(search):
                         "disk_count": disk.count,
                     }
                     for disk in host.disks
+                ],
+                "processors": [
+                    {
+                        "processor_type": processor.processor_type,
+                        "vendor": processor.vendor,
+                        "product": processor.product,
+                    }
+                    for processor in host.processors
                 ],
             }
             available_hosts.append(host_dict)

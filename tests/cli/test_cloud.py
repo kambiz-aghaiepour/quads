@@ -326,8 +326,8 @@ class TestCloud(TestBase):
     def test_free_cloud(self, define_free_cloud):
         self.quads_cli_call("free_cloud")
 
-        assert self._caplog.messages[1].startswith(f"{FREE_CLOUD} (reserved: ")
-        assert self._caplog.messages[1].endswith("min remaining)")
+        assert self._caplog.messages[0].startswith(f"{FREE_CLOUD} (reserved: ")
+        assert self._caplog.messages[0].endswith("min remaining)")
 
     @patch("quads.quads_api.Session.get")
     def test_free_cloud_exception(self, mock_get, define_free_cloud):

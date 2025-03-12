@@ -823,7 +823,7 @@ class QuadsCli:
         if self.cli_args.get("os"):
             os_type = self.cli_args.get("os")
             available_os = self.quads.get_os_list()
-            if len([_os["Title"] for _os in available_os if _os["Title"] == os_type]) >= 1:
+            if any(_os["Title"] == os_type for _os in available_os):
                 data["ostype"] = os_type
             else:
                 raise CliException(f"Could not parse os {os_type}, please check available os --os-list.")
@@ -916,6 +916,14 @@ class QuadsCli:
                 clean_data["vlan"] = int(self.cli_args.get("vlan"))
             except (TypeError, ValueError):  # pragma: no cover
                 clean_data["vlan"] = "None"
+
+        if self.cli_args.get("os"):
+            os_type = self.cli_args.get("os")
+            available_os = self.quads.get_os_list()
+            if any(_os["Title"] == os_type for _os in available_os):
+                clean_data["ostype"] = os_type
+            else:
+                raise CliException(f"Could not parse os {os_type}, please check available os --os-list.")
 
         if "wipe" in self.cli_args:
             clean_data["wipe"] = self.cli_args.get("wipe")

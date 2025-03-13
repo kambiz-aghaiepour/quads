@@ -115,6 +115,8 @@ curl -k
 
 ## Via python-quads-lib
 
+* Requires the [python-quads-lib](https://python-quads-lib.readthedocs.io/en/stable/readme.html#installation) library.
+
 ### Register via Python
 ```python
 from quads_lib import QuadsApi

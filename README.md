@@ -112,7 +112,7 @@ QUADS automates the future scheduling, end-to-end provisioning and delivery of b
    - Drive automated systems provisioning and network switch changes to deliver isolated, multi-tenant bare-metal environments
    - Automated network and provisioning validation prior to delivering sets of machines/networks to tenants
    - Automated allocation of optional, publicly routable VLANs
-   - Generates/maintains user-configurable [instackenv.json](https://docs.openstack.org/tripleo-docs/latest/install/environments/baremetal.html#instackenv-json) to accomodate OpenStack deployment.
+   - Generates/maintains user-configurable [instackenv.json](https://docs.openstack.org/tripleo-docs/latest/install/environments/baremetal.html#instackenv-json) to accomodate ironic-based OpenStack/OpenShift deployments.
    - Generates/maintains user-configurable ocpinventory.json for OpenShift on Baremetal Deployments
    - Automatically generate/maintain documentation to illustrate current status
      * Current system details, infrastructure fleet inventory
@@ -125,7 +125,7 @@ QUADS automates the future scheduling, end-to-end provisioning and delivery of b
    - JIRA integration.
    - Chat webhook and IRC notifications (via supybot/notify plugin) for system releases.
    - Email notifications to users for new future assignments, releases and expirations.
-   - Flask-based Web UI for searching for available bare-metal systems in the future based on model.
+   - Flask-based Web UI for searching for available bare-metal systems in the future based on model and hardware.
    - Open, RESTful JSON API and RBAC for controlling access
    - Full-featured API for self-service scheduling of systems/assignments
 
@@ -134,6 +134,7 @@ QUADS automates the future scheduling, end-to-end provisioning and delivery of b
    - Installation via RPM for Fedora Linux.
    - We use [Badfish](https://github.com/redhat-performance/badfish) for managing bare-metal IPMI
    - We use [Foreman](https://theforeman.org/) for the systems provisioning backend.
+   - We also provide a standalone [Python client library](https://python-quads-lib.readthedocs.io/en/stable/readme.html#installation) for interacting with the QUADS framework programmatically.
    - A typical QUADS deployment might look like this:
 
 ![quadsarchitecture](/image/quads-architecture.jpg)

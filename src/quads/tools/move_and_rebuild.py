@@ -208,22 +208,32 @@ async def move_and_rebuild(host, new_cloud, semaphore, rebuild=False, loop=None)
             if _assignment.ostype:
                 os_type = _assignment.ostype
 
-        params = [
-            {
-                "name": "operatingsystems",
-                "value": os_type,
-                "identifier": "title",
-            },
-            {"name": "ptables", "value": Config["foreman_default_ptable"]},
-            {"name": "media", "value": Config["foreman_default_medium"]},
-        ]
-
         foreman = Foreman(
             Config["foreman_api_url"],
             Config["foreman_username"],
             Config["foreman_password"],
             semaphore=semaphore,
         )
+
+        params = [
+            {
+                "name": "operatingsystems",
+                "value": os_type,
+                "identifier": "title",
+            },
+        ]
+
+        available_os = await foreman.get_available_os()
+        for os in available_os:
+            if os["title"] == os_type:
+                os_id = os["id"]
+                break
+
+        available_mediums = await foreman.get_mediums(os_id)
+        params.append({"name": "media", "value": available_mediums[0]["name"]})
+
+        available_ptables = await foreman.get_ptables(os_id)
+        params.append({"name": "ptables", "value": available_ptables[0]["name"]})
 
         set_result = await foreman.set_host_parameter(host, "overcloud", "true")
         foreman_results.append(set_result)

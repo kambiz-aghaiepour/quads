@@ -389,4 +389,14 @@ class Foreman(object):
     async def get_available_os(self):
         endpoint = "/operatingsystems"
         result = await self.get(endpoint)
-        return result.get('results', {})
+        return result.get("results", {})
+
+    async def get_mediums(self, os_id):
+        endpoint = f"/operatingsystems/{os_id}/media"
+        result = await self.get(endpoint)
+        return result.get("results", {})
+
+    async def get_ptables(self, os_id):
+        endpoint = f"/operatingsystems/{os_id}/ptables"
+        result = await self.get(endpoint)
+        return result.get("results", {})

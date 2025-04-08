@@ -15,7 +15,7 @@
 %define name quads-dev
 %define reponame quads
 %define branch development
-%define version 2.1.6
+%define version 2.2.0
 %define build_timestamp %{lua: print(os.date("%Y%m%d"))}
 
 Summary: Automated future scheduling, documentation, end-to-end provisioning and assignment of servers and networks.
@@ -236,6 +236,12 @@ fi;
 find /opt/quads/ | grep -E "(/__pycache__$|\.pyc$|\.pyo$)" | xargs rm -rf
 
 %changelog
+
+* Tue Apr 08 2024 Will Foster <wfoster@redhat.com>
+- 2.2.0 Beta release
+- self-scheduling feature
+- GPU hardware filtering
+- quads-web dark theme
 
 * Mon Dec 09 2024 Will Foster <wfoster@redhat.com>
 - 2.1.6 Release

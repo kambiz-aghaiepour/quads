@@ -202,14 +202,11 @@ if [ "$1" -eq 1 ]; then
     /usr/bin/systemctl start nginx
 fi
 
+# upgrades only we bounce services and run any migrations
 if [ "$1" -eq 2 ]; then
-echo "======================================================="
-echo " For package upgrades restart QUADS app stack only     "
-echo "======================================================="
-echo "                                                       "
-echo "        systemctl restart quads-{server,web}           "
-echo "                                                       "
-echo "======================================================="
+/usr/bin/systemctl restart quads-server
+/usr/bin/systemctl restart quads-web
+cd /opt/quads && flask --app quads.server.app db upgrade
 fi
 
 if [ "$1" -eq 1 ]; then

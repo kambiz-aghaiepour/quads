@@ -6,16 +6,7 @@ from quads.exceptions import CliException
 from quads.quads_api import APIServerException
 from quads.server.dao.baseDao import EntryExisting
 from quads.server.dao.host import HostDao
-from tests.cli.config import (
-    CLOUD,
-    HOST_TYPE,
-    DEFINE_HOST,
-    MODEL1,
-    HOST1,
-    IFIP1,
-    HOST2,
-    DEFAULT_CLOUD,
-)
+from tests.cli.config import CLOUD, DEFAULT_CLOUD, DEFINE_HOST, HOST1, HOST2, HOST_TYPE, IFIP1, MODEL1, RACK, ULOC1
 from tests.cli.test_base import TestBase
 
 
@@ -72,6 +63,8 @@ class TestHost(TestBase):
         self.cli_args["defaultcloud"] = DEFAULT_CLOUD
         self.cli_args["hosttype"] = HOST_TYPE
         self.cli_args["model"] = MODEL1
+        self.cli_args["rack"] = RACK
+        self.cli_args["uloc"] = ULOC1
 
         self.quads_cli_call("hostresource")
 

@@ -189,7 +189,7 @@ async def rack(rack):
                 owner = assignment.owner if assignment else "QUADS"
                 host_details.append(
                     {
-                        "U": host.rack[1:],
+                        "U": host.uloc,
                         "ServerHostnamePublic": host.name.split(".")[0],
                         "MAC": foreman_host.get("mac", ""),
                         "IP": foreman_host.get("ip", ""),

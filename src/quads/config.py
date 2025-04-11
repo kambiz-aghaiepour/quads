@@ -86,7 +86,7 @@ class _Config(_ConfigBase):
     FPING_TIMEOUT = 10000
 
     QUADSVERSION = "2.2.0"
-    QUADSCODENAME = "maximillian"
+    QUADSCODENAME = "maximilian"
 
     SUPPORTED = [
         "fc640",
@@ -109,6 +109,8 @@ class _Config(_ConfigBase):
         "r750xd",
         "r750",
         "750",
+        "r770",
+        "XE8640",
         "r720xd",
         "7425",
         "7525",

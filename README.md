@@ -5,7 +5,7 @@ QUADS
 QUADS automates the future scheduling, end-to-end provisioning and delivery of bare-metal servers and networks.
 
 * Visit the [QUADS development blog](https://quads.dev)
-* Please read our [contributing guide](https://github.com/redhat-performance/quads/blob/latest/CONTRIBUTING.md) and use [Gerrit Review](https://review.gerrithub.io/q/project:redhat-performance%252Fquads) to submit patches.
+* Please read our [contributing guide](/CONTRIBUTING.md) and use [Gerrit Review](https://review.gerrithub.io/q/project:redhat-performance%252Fquads) to submit patches.
 * Find us on `#quads` on `irc.libera.chat` [IRC web chat](https://web.libera.chat/?channels=#quads)
 
 ![quads-rpm-build](https://copr.fedorainfracloud.org/coprs/quadsdev/python3-quads/package/quads/status_image/last_build.png)
@@ -306,10 +306,10 @@ systemctl restart nginx
 ### Installing other QUADS Components
 
 #### QUADS Move Command
-   - QUADS relies on calling an external script, trigger or workflow to enact the actual provisioning of machines. You can look at and modify our [move-and-rebuild-hosts](https://github.com/redhat-performance/quads/blob/latest/src/quads/tools/move_and_rebuild.py) tool to suit your environment for this purpose.  Read more about this in the [move-host-command](https://github.com/redhat-performance/quads#quads-move-host-command) section below.
+   - QUADS relies on calling an external script, trigger or workflow to enact the actual provisioning of machines. You can look at and modify our [move-and-rebuild-hosts](/src/quads/tools/move_and_rebuild.py) tool to suit your environment for this purpose.  Read more about this in the [move-host-command](#quads-move-host-command) section below.
 
 ### Making QUADS Run
-   - QUADS is a passive service and does not do anything you do not tell it to do.  We control QUADS with [cron commands](https://raw.githubusercontent.com/redhat-performance/quads/latest/cron/quads).
+   - QUADS is a passive service and does not do anything you do not tell it to do.  We control QUADS with [cron commands](/cron/quads).
    - We ship an example cron file and install it for you that should work out of the box, it just has entries commented out.
    - To enable QUADS services to run you'll need to **uncomment them**.
 
@@ -345,7 +345,7 @@ crontab -e
 #### Define Initial Cloud Environments
    - Define the various cloud environments
    - These are the isolated environments QUADS will use and provision into for you.
-   - Note that **cloud01** is the designated "Spare Pool" where servers will go when they are first added and also when they have no active assignments to move to for a workload.  You can name it [anything you want](https://github.com/redhat-performance/quads/blob/latest/conf/quads.yml#L7) by editing the QUADS configuration file `/opt/quads/conf/quads.yml`
+   - Note that **cloud01** is the designated "Spare Pool" where servers will go when they are first added and also when they have no active assignments to move to for a workload.  You can name it [anything you want](/conf/quads.yml#L7) by editing the QUADS configuration file `/opt/quads/conf/quads.yml`
 
 ```bash
 quads --define-cloud --cloud cloud01
@@ -357,7 +357,7 @@ quads --define-cloud --cloud cloud03 --description "03 Cloud Environment"
 
 ##### Define your Server Models
 
-* Look for the `models:` [key/value pair](https://github.com/redhat-performance/quads/blob/latest/conf/quads.yml#L184) and add ones that accurately describe your fleet.
+* Look for the `models:` [key/value pair](/conf/quads.yml#L184) and add ones that accurately describe your fleet.
 * This can be any identifiable string, we have added some stock ones we use for example but anything that makes sense to you to distinguish system models, sub-models etc that works for your needs e.g. R750-IL-XG might be a sub-model of a Dell R750.
 * Models are used for filtering search, availability and other useful features and it's a mandatory data element you need to provide.
 
@@ -540,9 +540,9 @@ Moving d16-h07-000-r650.example.com cloud60 to cloud01, wipe = False
 
 ```
 
-* You can also modify the default `move_command` in [quads](https://github.com/redhat-performance/quads/blob/latest/src/quads/cli/cli.py#L31).
+* You can also modify the default `move_command` in [quads](/src/quads/cli/cli.py#L31).
 
-* You can look at the [move-and-rebuild-hosts](https://github.com/redhat-performance/quads/blob/latest/src/quads/tools/move_and_rebuild.py) tool as an example.  It's useful to note that with `move_and_rebuild.py` passing a fourth argument will result in only the network automation running and the actual host provisioning will be skipped.  You should review this script and adapt it to your needs, we try to make variables for everything but some assumptions are made to fit our running environments.
+* You can look at the [move-and-rebuild-hosts](/src/quads/tools/move_and_rebuild.py) tool as an example.  It's useful to note that with `move_and_rebuild.py` passing a fourth argument will result in only the network automation running and the actual host provisioning will be skipped.  You should review this script and adapt it to your needs, we try to make variables for everything but some assumptions are made to fit our running environments.
 
 ## QUADS Reporting
 
@@ -623,7 +623,7 @@ Additionally, you can pass `--year` instead for a report for every month in that
 
 ## Customizing Environment Web Details
 ### Changing the Default Lab Name
-You can change the default QUADS environment name by modifying the `lab_name` variable in the [quads.yml](https://github.com/redhat-performance/quads/blob/latest/conf/quads.yml#L11)
+You can change the default QUADS environment name by modifying the `lab_name` variable in the [quads.yml](/conf/quads.yml#L11)
 
 Restart `quads-web` to take effect.
 
@@ -733,7 +733,7 @@ The types of notifications you send are configured in the QUADS [configuration f
 |-------|------|----------|---------------|---------------|
 | New environment defined | scheduling | email | pre_initial | [future_initial_message](src/quads/templates/future_initial_message) |
 | New environment allocated | scheduling | email | initial | [initial_message](src/quads/templates/initial_message) |
-| New environment allocated | scheduling | webhook/IRC | initial | [called in notify](https://github.com/redhat-performance/quads/blob/latest/src/quads/tools/notify.py#L75) |
+| New environment allocated | scheduling | webhook/IRC | initial | [called in notify](/src/quads/tools/notify.py#L75) |
 | New assignment scheduled | scheduling | Jira | N/A | [jira_ticket_assignment](src/quads/templates/jira_ticket_message) |
 | Change in environment | assignment | email | pre | [future_message](src/quads/templates/future_message) |
 | Environment expiring | assignment | email | one_day, three_days, five_days, seven_days | [message](src/quads/templates/message) |
@@ -1481,7 +1481,7 @@ quads --validate-env --cloud cloud01
 ```
 
 ### Mapping Internal VLAN Interfaces to Problem Hosts
-You might have noticed that we configure our [Foreman](https://github.com/redhat-performance/quads/tree/latest/templates/foreman) templates to drop `172.{16,17,18,19}.x` internal VLAN interfaces which correspond to the internal, QUADS-managed multi-tenant interfaces across a set of hosts in a cloud assignment.
+You might have noticed that we configure our [Foreman](/templates/foreman) templates to drop `172.{16,17,18,19}.x` internal VLAN interfaces which correspond to the internal, QUADS-managed multi-tenant interfaces across a set of hosts in a cloud assignment.
 
 The _first two octets_ here can be substituted by the _first two octets of your systems public network_ in order to determine from `validate_env.py --debug` which host internal interfaces have issues or are unreachable.
 
@@ -1499,7 +1499,7 @@ The _first two octets_ here can be substituted by the _first two octets of your 
 
 ![validation_2](/image/troubleshoot_validation2.png?raw=true)
 
-This mapping feeds into our [VLAN network validation code](https://github.com/redhat-performance/quads/blob/latest/src/quads/tools/validate_env.py#L276)
+This mapping feeds into our [VLAN network validation code](/src/quads/tools/validate_env.py#L276)
 
 ### Dealing with the Postgres Database
 * Everything QUADS does is done inside the PostgreSQL database, occasionally you may want to adjust settings here.

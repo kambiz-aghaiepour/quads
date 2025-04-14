@@ -4,6 +4,9 @@
 
 Database schema changes (also known as schema migrations) are necessary operations that help evolve our database structure to accommodate new features, improve performance, or fix data modeling issues. In our PostgreSQL database, we perform these updates periodically to maintain and enhance our application's data layer.
 
+> [!NOTE]
+> This document is for developers, QUADS will automatically run migration scripts if they are required.
+
 ### Why We Need Schema Changes
 
 1. **Feature Requirements**: New application features often require new data structures or modifications to existing ones
@@ -90,7 +93,7 @@ When deploying QUADS or updating to a new version, you may need to upgrade your 
 
 1. **Ensure Database Service is Running**
    ```bash
-   systemctl status postgresql
+   systemctl status quads-db
    ```
 
 2. **Navigate to QUADS Directory**

@@ -1834,7 +1834,7 @@ class QuadsCli:
                     )
 
                     try:
-                        done = loop.run_until_complete(asyncio.gather(*[task(loop) for task in tasks]))
+                        done = loop.run_until_complete(asyncio.gather(*[task() for task in tasks]))
                     except (
                         asyncio.CancelledError,
                         SystemExit,

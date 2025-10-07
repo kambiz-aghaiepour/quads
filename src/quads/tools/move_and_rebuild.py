@@ -3,6 +3,7 @@ import asyncio
 import logging
 from datetime import datetime
 from time import sleep
+from typing import Any, Dict, Optional
 
 from quads.config import Config
 from quads.helpers.utils import is_supported, get_vlan
@@ -15,6 +16,12 @@ from quads.tools.external.ssh_helper import SSHHelper, SSHHelperException
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 quads = QuadsApi(Config)
+
+DEFAULT_HOST_UPDATE_DATA = {
+    "build": False,
+    "validated": False,
+    "switch_config_applied": False,
+}
 
 
 def switch_config(host, old_cloud, new_cloud):  # pragma: no cover
@@ -136,6 +143,12 @@ async def ipmi_reset(host, semaphore):  # pragma: no cover
     await execute_ipmi(host, ipmi_on, semaphore)
 
 
+def _update_host_on_failure(host_obj, data: Dict[str, Any] = None) -> None:
+    """Helper function to update host with failure data."""
+    update_data = data or DEFAULT_HOST_UPDATE_DATA.copy()
+    quads.update_host(host_obj.name, update_data)
+
+
 async def move_and_rebuild(host, new_cloud, semaphore, rebuild=False, loop=None):  # pragma: no cover
     build_start = datetime.now()
     logger.debug("Moving and rebuilding host: %s" % host)
@@ -190,6 +203,7 @@ async def move_and_rebuild(host, new_cloud, semaphore, rebuild=False, loop=None)
             )
         except BadfishException:
             logger.error(f"Could not initialize Badfish. Verify ipmi credentials for mgmt-{host}.")
+            _update_host_on_failure(_host_obj)
             return False
 
         if is_supported(host):
@@ -201,12 +215,14 @@ async def move_and_rebuild(host, new_cloud, semaphore, rebuild=False, loop=None)
                     await asyncio.sleep(600)
             except BadfishException:
                 logger.error(f"Could not set boot order via Badfish for mgmt-{host}.")
+                _update_host_on_failure(_host_obj)
                 return False
 
         try:
             await badfish.set_power_state("on")
         except BadfishException:
             logger.error(f"Failed to power on {host}")
+            _update_host_on_failure(_host_obj)
             return False
         foreman_results = []
         os_type = Config["foreman_default_os"]
@@ -230,10 +246,7 @@ async def move_and_rebuild(host, new_cloud, semaphore, rebuild=False, loop=None)
         ]
 
         available_os = await foreman.get_available_os()
-        for os in available_os:
-            if os["title"] == os_type:
-                os_id = os["id"]
-                break
+        os_id = next((os["id"] for os in available_os if os["title"] == os_type), None)
 
         available_mediums = await foreman.get_mediums(os_id)
         params.append({"name": "media", "value": available_mediums[0]["name"]})
@@ -279,13 +292,14 @@ async def move_and_rebuild(host, new_cloud, semaphore, rebuild=False, loop=None)
                     )
                 except BadfishException:
                     logger.error(f"Error setting PXE boot via Badfish on {host}.")
+                    _update_host_on_failure(_host_obj)
                     return False
             try:
                 await badfish.reboot_server(graceful=False)
             except BadfishException:
                 logger.error("Error rebooting server: {host}")
+                _update_host_on_failure(_host_obj)
                 return False
-
         else:
             try:
                 ipmi_pxe_persistent = [
@@ -297,7 +311,7 @@ async def move_and_rebuild(host, new_cloud, semaphore, rebuild=False, loop=None)
                 await execute_ipmi(host, arguments=ipmi_pxe_persistent, semaphore=new_semaphore)
                 await ipmi_reset(host, new_semaphore)
             except Exception as ex:
-                logger.debug(ex)
+                logger.debug(f"IPMI PXE error for {host}: {ex}")
                 logger.error(f"There was something wrong setting PXE flag or resetting IPMI on {host}.")
 
     if _target_cloud.name == _host_obj.default_cloud.name:
@@ -314,24 +328,33 @@ async def move_and_rebuild(host, new_cloud, semaphore, rebuild=False, loop=None)
                 )
             except BadfishException:
                 logger.error(f"Could not initialize Badfish. Verify ipmi credentials for mgmt-{host}.")
+                _update_host_on_failure(_host_obj)
                 return False
 
         await badfish.set_power_state("off")
 
+        try:
+            await badfish.set_power_state("off")
+        except BadfishException as e:
+            logger.error(f"Failed to power off {host}: {e}")
+            _update_host_on_failure(_host_obj)
+            return False
+
     data = {"host": _host_obj.name, "cloud": _target_cloud.name}
     schedule = quads.get_current_schedules(data)
     if schedule:
-        data = {
+        schedule_update_data = {
             "build_start": build_start.strftime("%Y-%m-%dT%H:%M"),
             "build_end": datetime.now().strftime("%Y-%m-%dT%H:%M"),
         }
-        quads.update_schedule(schedule[0].id, data)
-    logger.debug("Updating host: %s")
-    data = {
+        quads.update_schedule(schedule[0].id, schedule_update_data)
+
+    logger.debug(f"Updating host: {host}")
+    success_data = {
         "cloud": _target_cloud.name,
         "build": True,
         "last_build": datetime.now().strftime("%Y-%m-%dT%H:%M"),
         "validated": False,
     }
-    quads.update_host(_host_obj.name, data)
+    quads.update_host(_host_obj.name, success_data)
     return True

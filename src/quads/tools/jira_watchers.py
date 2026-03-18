@@ -26,6 +26,8 @@ async def main(_loop):
     try:
         jira = Jira(
             Config["jira_url"],
+            Config["jira_username"],
+            Config["jira_password"],
             loop=_loop,
         )
     except JiraException as ex:
@@ -33,60 +35,63 @@ async def main(_loop):
         return 1
 
     tickets = await jira.get_pending_tickets()
-    for ticket in tickets["issues"]:
-        ticket_key = ticket.get("key").split("-")[-1]
-        fields = ticket.get("fields")
-        if fields:
-            description = fields.get("description")
-            try:
-                cloud_field = description.split("\n")[1]
-                cloud = cloud_field.split()[-1]
-            except IndexError:
-                logger.warning(f"Could not retrieve cloud name from ticket {ticket_key}")
-                continue
+    if tickets:
+        tickets = tickets.get("issues", [])
 
-            if "EXTENSION" in fields.get("labels"):
-                schedules = quads.get_current_schedules({"cloud": cloud})
-                conflict = False
-                for schedule in schedules:
-                    end_date = schedule.end + timedelta(weeks=2)
-                    data = {
-                        "start": schedule.end.strftime("%Y-%m-%dT%H:%M"),
-                        "end": end_date.strftime("%Y-%m-%dT%H:%M"),
-                    }
-                    available = quads.is_available(schedule.host.name, data)
-                    if not available:
-                        conflict = True
-                        await jira.add_label(ticket_key, no_extend_label)
-                        logger.info(f"{cloud} labeled {no_extend_label}")
-                        break
+        for ticket in tickets:
+            ticket_key = ticket.get("key").split("-")[-1]
+            fields = ticket.get("fields")
+            if fields:
+                description = fields.get("description")
+                try:
+                    cloud_field = description.split("\n")[1]
+                    cloud = cloud_field.split()[-1]
+                except IndexError:
+                    logger.warning(f"Could not retrieve cloud name from ticket {ticket_key}")
+                    continue
 
-                if not conflict:
-                    await jira.add_label(ticket_key, extend_label)
-                    logger.info(f"{cloud} labeled {extend_label}")
+                if "EXTENSION" in fields.get("labels"):
+                    schedules = quads.get_current_schedules({"cloud": cloud})
+                    conflict = False
+                    for schedule in schedules:
+                        end_date = schedule.end + timedelta(weeks=2)
+                        data = {
+                            "start": schedule.end.strftime("%Y-%m-%dT%H:%M"),
+                            "end": end_date.strftime("%Y-%m-%dT%H:%M"),
+                        }
+                        available = quads.is_available(schedule.host.name, data)
+                        if not available:
+                            conflict = True
+                            await jira.add_label(ticket_key, no_extend_label)
+                            logger.info(f"{cloud} labeled {no_extend_label}")
+                            break
 
-            parent = fields.get("parent")
-            if parent:
-                p_ticket_key = parent.get("key").split("-")[-1]
-                watchers = await jira.get_watchers(p_ticket_key)
-                failed_watchers = []
-                for watcher in watchers["watchers"]:
-                    response = await jira.add_watcher(ticket_key, watcher["key"])
-                    if not response:
-                        failed_watchers.append(watcher["key"])
-                if len(failed_watchers) != 0 and "WATCHERS_MAP_FAIL_NOTIFIED" not in fields.get("labels"):
-                    await jira.add_label(ticket_key, "WATCHERS_MAP_FAIL_NOTIFIED")
-                    template_file = "watchers_fail"
-                    with open(os.path.join(Config.TEMPLATES_PATH, template_file)) as _file:
-                        template = Template(_file.read())
-                    submitter = description.split("\n")[0].split()[-1]
-                    parameters = {
-                        "ticket": ticket_key,
-                    }
-                    content = template.render(**parameters)
-                    subject = "Failed to add watchers from parent ticket ticket to the sub-task."
-                    postman = Postman(subject, submitter, "", content)
-                    postman.send_email()
+                    if not conflict:
+                        await jira.add_label(ticket_key, extend_label)
+                        logger.info(f"{cloud} labeled {extend_label}")
+
+                parent = fields.get("parent")
+                if parent:
+                    p_ticket_key = parent.get("key").split("-")[-1]
+                    watchers = await jira.get_watchers(p_ticket_key)
+                    failed_watchers = []
+                    for watcher in watchers["watchers"]:
+                        response = await jira.add_watcher(ticket_key, watcher["key"])
+                        if not response:
+                            failed_watchers.append(watcher["key"])
+                    if len(failed_watchers) != 0 and "WATCHERS_MAP_FAIL_NOTIFIED" not in fields.get("labels"):
+                        await jira.add_label(ticket_key, "WATCHERS_MAP_FAIL_NOTIFIED")
+                        template_file = "watchers_fail"
+                        with open(os.path.join(Config.TEMPLATES_PATH, template_file)) as _file:
+                            template = Template(_file.read())
+                        submitter = description.split("\n")[0].split()[-1]
+                        parameters = {
+                            "ticket": ticket_key,
+                        }
+                        content = template.render(**parameters)
+                        subject = "Failed to add watchers from parent ticket ticket to the sub-task."
+                        postman = Postman(subject, submitter, "", content)
+                        postman.send_email()
 
     return 0
 

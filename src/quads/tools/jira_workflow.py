@@ -17,21 +17,25 @@ async def main(_loop):
     try:
         jira = Jira(
             Config["jira_url"],
+            Config["jira_username"],
+            Config["jira_password"],
             loop=_loop,
         )
     except JiraException as ex:
         logger.error(ex)
         return 1
 
-    all_pending_tickets = await jira.get_all_pending_tickets()
-    all_pending_tickets = all_pending_tickets["issues"]
     jira_ticket_keys = []
-    for ticket in all_pending_tickets:
-        ticket_key = ticket.get("key").split("-")[-1]
-        fields = ticket.get("fields")
-        parent = fields.get("parent")
-        if parent is None:
-            jira_ticket_keys.append(ticket_key)
+    all_pending_tickets = await jira.get_all_pending_tickets()
+    if all_pending_tickets:
+        all_pending_tickets = all_pending_tickets.get("issues", [])
+
+        for ticket in all_pending_tickets:
+            ticket_key = ticket.get("key").split("-")[-1]
+            fields = ticket.get("fields")
+            parent = fields.get("parent")
+            if parent is None:
+                jira_ticket_keys.append(ticket_key)
 
     assignments = quads.get_active_assignments()
     cloud_ticket_keys = [assignment.ticket for assignment in assignments]
@@ -40,12 +44,13 @@ async def main(_loop):
     for ticket_key in expired_keys:
         transitions = await jira.get_transitions(ticket_key)
         transition_result = False
-        for transition in transitions:
-            t_name = transition.get("name")
-            if t_name and t_name.lower() == "done":
-                transition_id = transition.get("id")
-                transition_result = await jira.post_transition(ticket_key, transition_id)
-                break
+        if transitions:
+            for transition in transitions:
+                t_name = transition.get("name")
+                if t_name and t_name.lower() == "done":
+                    transition_id = transition.get("id")
+                    transition_result = await jira.post_transition(ticket_key, transition_id)
+                    break
 
         if not transition_result:
             logger.warning(f"Failed to update ticket status, ticket key {ticket_key}, SKIPPING.")

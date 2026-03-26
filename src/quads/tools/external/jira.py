@@ -302,6 +302,7 @@ class Jira(object):
         project = {"project": f'"{self.ticket_queue}"'}
         prefix = "/search/jql?jql="
         query_items = []
+        fields = "&fields=key,parent,description,labels"
 
         if not query:
             query = project
@@ -312,7 +313,7 @@ class Jira(object):
             query_items.append(f"{k}={v}")
 
         jql = " AND ".join(query_items)
-        endpoint = f"{prefix}{jql}"
+        endpoint = f"{prefix}{jql}{fields}"
         logger.debug("GET pending tickets: %s" % endpoint)
         result = await self.get_request(endpoint)
         if not result:

@@ -70,7 +70,7 @@ class TestJiraWatchers(object):
                 ]
             },
             {"issues": [{"statusCategory": 4, "name": "unitest", "key": "2"}]},
-            {"watchers": [{"key": "1"}]},
+            {"watchers": [{"accountId": "1"}]},
         ]
         mock_get.return_value.__aenter__.return_value = resp
 
@@ -145,7 +145,7 @@ class TestJiraWatchers(object):
                 ]
             },
             {"issues": [{"statusCategory": 4, "name": "unitest", "key": "2"}]},
-            {"watchers": [{"key": "1"}]},
+            {"watchers": [{"accountId": "1"}]},
         ]
         mock_get.return_value.__aenter__.return_value = resp
 
